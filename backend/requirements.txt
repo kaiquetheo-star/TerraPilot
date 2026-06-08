@@ -1,0 +1,8 @@
+fastapi>=0.111.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.7.0
+tablestore>=6.0.0
+qwen-agent>=0.0.18
+dashscope>=1.20.0
+aliyun-log-python-sdk>=0.9.18
+mcp>=1.0.0
