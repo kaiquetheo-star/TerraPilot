@@ -1,8 +1,23 @@
-.next
-node_modules
-out
-dist
-.env*.local
+# Python
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
 *.log
-coverage
-backend/__pycache__
