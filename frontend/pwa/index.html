@@ -5,138 +5,317 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TerraPilot - Cadastro Rural</title>
     
+    <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#10b981">
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
+    <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        .status-offline { background-color: #ef4444; }
-        .status-online { background-color: #10b981; }
-        .pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        .status-offline { 
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+            color: white;
+        }
+        
+        .status-online { 
+            background: linear-gradient(90deg, #10b981, #059669);
+            color: white;
+        }
+        
+        .pulse-success {
+            animation: pulse-success 0.6s ease-in-out;
+        }
+        
+        @keyframes pulse-success {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); background-color: #10b981; }
+            100% { transform: scale(1); }
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+        }
+        
+        .input-with-icon {
+            padding-left: 3rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            transition: all 0.2s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            transition: all 0.2s;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+        }
+        
+        .progress-bar {
+            transition: width 0.3s ease-in-out;
+        }
+        
+        .toast-enter {
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-white">
+<body class="bg-gray-50 min-h-screen">
     
-    <div id="status-bar" class="fixed top-0 left-0 right-0 p-2 text-center text-sm font-bold z-50 status-offline">
-        🔴 OFFLINE - Dados serão salvos localmente
+    <!-- Status Bar de Conexão -->
+    <div id="status-bar" class="fixed top-0 left-0 right-0 p-3 text-center text-sm font-bold z-50 status-offline shadow-lg">
+        <i class="fas fa-wifi-slash mr-2"></i>
+        <span>OFFLINE - Dados serão salvos localmente</span>
     </div>
     
-    <div class="container mx-auto px-4 pt-16 pb-20">
+    <div class="container mx-auto px-4 pt-20 pb-8 max-w-2xl">
         
-        <header class="mb-8">
-            <h1 class="text-3xl font-bold text-green-400 mb-2">🌱 TerraPilot</h1>
-            <p class="text-gray-400">Cadastro Ambiental Rural</p>
+        <!-- Header -->
+        <header class="mb-6 text-center">
+            <div class="inline-block p-4 bg-gradient-to-br from-green-400 to-green-600 rounded-full mb-4 shadow-lg">
+                <i class="fas fa-seedling text-white text-4xl"></i>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">TerraPilot</h1>
+            <p class="text-gray-600">Cadastro Ambiental Rural</p>
         </header>
         
-        <form id="car-form" class="space-y-6">
+        <!-- Card de Instruções -->
+        <div class="card p-5 mb-6 bg-blue-50 border-l-4 border-blue-500">
+            <h3 class="font-bold text-blue-900 mb-2 flex items-center">
+                <i class="fas fa-info-circle mr-2"></i>
+                Como usar o TerraPilot
+            </h3>
+            <ol class="text-sm text-blue-800 space-y-1 list-decimal list-inside">
+                <li>Preencha seus dados abaixo</li>
+                <li>Capture sua localização GPS</li>
+                <li>Tire fotos da propriedade (opcional)</li>
+                <li>Salve - funciona mesmo sem internet!</li>
+                <li>Sincronize quando tiver conexão</li>
+            </ol>
+        </div>
+        
+        <!-- Formulário de Coleta -->
+        <form id="car-form" class="card p-6 space-y-5">
             
+            <!-- ID do Produtor -->
             <div>
-                <label class="block text-lg font-semibold mb-2">ID do Produtor</label>
-                <input 
-                    type="text" 
-                    id="farmer-id"
-                    required
-                    class="w-full p-4 text-xl bg-gray-800 border-2 border-gray-700 rounded-lg focus:border-green-500 focus:outline-none"
-                    placeholder="Ex: raimundo_001"
-                >
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    <i class="fas fa-user mr-1"></i> ID do Produtor
+                </label>
+                <div class="relative">
+                    <i class="fas fa-user input-icon"></i>
+                    <input 
+                        type="text" 
+                        id="farmer-id"
+                        required
+                        class="input-with-icon w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:bg-white focus:outline-none transition-all"
+                        placeholder="Ex: raimundo_001"
+                    >
+                </div>
             </div>
             
+            <!-- Área em Hectares -->
             <div>
-                <label class="block text-lg font-semibold mb-2">Área (hectares)</label>
-                <input 
-                    type="number" 
-                    id="area-ha"
-                    step="0.1"
-                    required
-                    class="w-full p-4 text-xl bg-gray-800 border-2 border-gray-700 rounded-lg focus:border-green-500 focus:outline-none"
-                    placeholder="Ex: 50"
-                >
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    <i class="fas fa-ruler-combined mr-1"></i> Área (hectares)
+                </label>
+                <div class="relative">
+                    <i class="fas fa-ruler-combined input-icon"></i>
+                    <input 
+                        type="number" 
+                        id="area-ha"
+                        step="0.1"
+                        min="0.1"
+                        required
+                        class="input-with-icon w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:bg-white focus:outline-none transition-all"
+                        placeholder="Ex: 50"
+                    >
+                </div>
+                <p class="text-xs text-gray-500 mt-1">Mínimo: 0.1 ha</p>
             </div>
             
+            <!-- Tipo de Vegetação -->
             <div>
-                <label class="block text-lg font-semibold mb-2">Tipo de Vegetação</label>
-                <select 
-                    id="vegetation-type"
-                    required
-                    class="w-full p-4 text-xl bg-gray-800 border-2 border-gray-700 rounded-lg focus:border-green-500 focus:outline-none"
-                >
-                    <option value="">Selecione...</option>
-                    <option value="Cerrado">Cerrado</option>
-                    <option value="Amazônia">Amazônia</option>
-                    <option value="Mata Atlântica">Mata Atlântica</option>
-                    <option value="Caatinga">Caatinga</option>
-                    <option value="Pampa">Pampa</option>
-                    <option value="Pantanal">Pantanal</option>
-                </select>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    <i class="fas fa-tree mr-1"></i> Tipo de Vegetação
+                </label>
+                <div class="relative">
+                    <i class="fas fa-tree input-icon"></i>
+                    <select 
+                        id="vegetation-type"
+                        required
+                        class="input-with-icon w-full p-4 bg-gray-50 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:bg-white focus:outline-none transition-all appearance-none"
+                    >
+                        <option value="">Selecione...</option>
+                        <option value="Cerrado">🌳 Cerrado</option>
+                        <option value="Amazônia">🌴 Amazônia</option>
+                        <option value="Mata Atlântica">🌿 Mata Atlântica</option>
+                        <option value="Caatinga">🌵 Caatinga</option>
+                        <option value="Pampa">🌾 Pampa</option>
+                        <option value="Pantanal">🦜 Pantanal</option>
+                    </select>
+                    <i class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                </div>
             </div>
             
+            <!-- Coordenadas GPS -->
             <div>
-                <label class="block text-lg font-semibold mb-2">Coordenadas GPS</label>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    <i class="fas fa-map-marker-alt mr-1"></i> Coordenadas GPS
+                </label>
                 <button 
                     type="button"
                     id="get-gps-btn"
-                    class="w-full p-4 text-xl bg-blue-600 hover:bg-blue-700 rounded-lg font-bold mb-2"
+                    class="btn-secondary w-full p-4 text-white rounded-lg font-semibold mb-3 flex items-center justify-center"
                 >
-                    📍 Capturar Localização Atual
+                    <i class="fas fa-location-arrow mr-2"></i>
+                    Capturar Minha Localização
                 </button>
-                <div id="gps-display" class="p-4 bg-gray-800 rounded-lg text-gray-400">
-                    Aguardando captura...
+                <div id="gps-display" class="p-4 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 text-center">
+                    <i class="fas fa-map-marker-alt text-2xl mb-2"></i>
+                    <p class="text-sm">Clique no botão acima para capturar</p>
                 </div>
                 <input type="hidden" id="gps-lat">
                 <input type="hidden" id="gps-lng">
             </div>
             
+            <!-- Upload de Fotos -->
             <div>
-                <label class="block text-lg font-semibold mb-2">Fotos da Propriedade</label>
-                <input 
-                    type="file" 
-                    id="photos"
-                    multiple
-                    accept="image/*"
-                    capture="environment"
-                    class="w-full p-4 bg-gray-800 border-2 border-gray-700 rounded-lg"
-                >
-                <p class="text-sm text-gray-500 mt-2">Tire fotos da vegetação, nascentes, etc.</p>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    <i class="fas fa-camera mr-1"></i> Fotos da Propriedade
+                </label>
+                <label class="block w-full p-6 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg text-center cursor-pointer hover:bg-gray-100 transition-all">
+                    <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                    <p class="text-sm font-medium text-gray-700">Clique para tirar fotos</p>
+                    <p class="text-xs text-gray-500 mt-1">Vegetação, nascentes, etc.</p>
+                    <input 
+                        type="file" 
+                        id="photos"
+                        multiple
+                        accept="image/*"
+                        capture="environment"
+                        class="hidden"
+                    >
+                </label>
+                <div id="photo-preview" class="mt-2 grid grid-cols-3 gap-2"></div>
             </div>
             
+            <!-- Observações -->
             <div>
-                <label class="block text-lg font-semibold mb-2">Observações</label>
-                <textarea 
-                    id="notes"
-                    rows="4"
-                    class="w-full p-4 text-lg bg-gray-800 border-2 border-gray-700 rounded-lg focus:border-green-500 focus:outline-none"
-                    placeholder="Informações adicionais sobre a propriedade..."
-                ></textarea>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    <i class="fas fa-comment-dots mr-1"></i> Observações
+                </label>
+                <div class="relative">
+                    <i class="fas fa-comment-dots absolute left-4 top-4 text-gray-400"></i>
+                    <textarea 
+                        id="notes"
+                        rows="4"
+                        class="w-full p-4 pl-11 bg-gray-50 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:bg-white focus:outline-none transition-all"
+                        placeholder="Informações adicionais sobre a propriedade..."
+                    ></textarea>
+                </div>
             </div>
             
+            <!-- Botão Salvar -->
             <button 
                 type="submit"
-                class="w-full p-6 text-2xl bg-green-600 hover:bg-green-700 rounded-lg font-bold shadow-lg"
+                id="submit-btn"
+                class="btn-primary w-full p-5 text-xl text-white rounded-lg font-bold shadow-lg flex items-center justify-center"
             >
-                💾 Salvar Cadastro
+                <i class="fas fa-save mr-2"></i>
+                Salvar Cadastro
             </button>
             
         </form>
         
-        <div id="pending-count" class="mt-8 p-4 bg-yellow-600 rounded-lg text-center hidden">
-            <p class="text-lg font-bold">
-                📋 <span id="count-number">0</span> cadastros aguardando sincronização
-            </p>
-            <button 
-                id="sync-btn"
-                class="mt-4 w-full p-4 bg-white text-yellow-600 rounded-lg font-bold"
-            >
-                🔄 Sincronizar Agora
-            </button>
+        <!-- Indicador de Sincronização -->
+        <div id="sync-status" class="mt-6 hidden">
+            <div class="card p-4 bg-blue-50 border-l-4 border-blue-500">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-bold text-blue-900">
+                        <i class="fas fa-sync fa-spin mr-2"></i>
+                        <span id="sync-status-text">Sincronizando...</span>
+                    </span>
+                    <span class="text-sm font-bold text-blue-900" id="sync-percentage">0%</span>
+                </div>
+                <div class="w-full bg-blue-200 rounded-full h-2 overflow-hidden">
+                    <div id="sync-bar" class="progress-bar h-full bg-gradient-to-r from-blue-500 to-blue-600" style="width: 0%"></div>
+                </div>
+            </div>
         </div>
+        
+        <!-- Contador de Submissões Pendentes -->
+        <div id="pending-count" class="mt-6 hidden">
+            <div class="card p-5 bg-yellow-50 border-l-4 border-yellow-500">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <p class="font-bold text-yellow-900 flex items-center">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span id="count-number">0</span> cadastros pendentes
+                        </p>
+                        <p class="text-xs text-yellow-700 mt-1">Aguardando conexão para sincronizar</p>
+                    </div>
+                </div>
+                <button 
+                    id="sync-btn"
+                    class="w-full p-3 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white rounded-lg font-bold transition-all flex items-center justify-center"
+                >
+                    <i class="fas fa-cloud-upload-alt mr-2"></i>
+                    Sincronizar Agora
+                </button>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="mt-8 text-center text-xs text-gray-500">
+            <p>TerraPilot v1.0 • Cadastro Ambiental Rural</p>
+            <p class="mt-1">Funciona offline • Sincroniza automaticamente</p>
+        </footer>
         
     </div>
     
-    <div id="toast" class="fixed bottom-4 left-4 right-4 p-4 bg-gray-800 rounded-lg shadow-lg hidden z-50">
-        <p id="toast-message"></p>
+    <!-- Toast de Notificação -->
+    <div id="toast" class="fixed bottom-4 left-4 right-4 p-4 bg-gray-900 text-white rounded-lg shadow-2xl hidden z-50 toast-enter">
+        <p id="toast-message" class="text-center font-medium"></p>
     </div>
     
     <script src="app.js"></script>

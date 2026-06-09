@@ -1,22 +1,26 @@
 {
-    "name": "TerraPilot - Cadastro Rural",
+    "name": "TerraPilot - Cadastro Ambiental Rural",
     "short_name": "TerraPilot",
-    "description": "Cadastro Ambiental Rural offline-first",
+    "description": "Sistema offline-first para cadastro ambiental rural. Capture dados mesmo sem internet e sincronize automaticamente.",
     "start_url": "/index.html",
     "display": "standalone",
-    "background_color": "#111827",
+    "background_color": "#f9fafb",
     "theme_color": "#10b981",
     "orientation": "portrait",
+    "categories": ["productivity", "utilities"],
+    "lang": "pt-BR",
     "icons": [
         {
             "src": "icon-192.png",
             "sizes": "192x192",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any maskable"
         },
         {
             "src": "icon-512.png",
             "sizes": "512x512",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any maskable"
         }
     ]
 }
