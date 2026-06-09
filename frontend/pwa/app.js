@@ -1,336 +1,231 @@
-// Estado da aplicação
+// Estado
 let currentGPS = null;
 let pendingSubmissions = [];
+let selectedPhotos = [];
+let selectedVegetations = [];
 
-// Elementos do DOM
-const statusBar = document.getElementById('status-bar');
-const carForm = document.getElementById('car-form');
-const getGpsBtn = document.getElementById('get-gps-btn');
-const gpsDisplay = document.getElementById('gps-display');
-const pendingCountDiv = document.getElementById('pending-count');
-const countNumber = document.getElementById('count-number');
-const syncBtn = document.getElementById('sync-btn');
-const toast = document.getElementById('toast');
-const toastMessage = document.getElementById('toast-message');
-const syncStatus = document.getElementById('sync-status');
-const syncBar = document.getElementById('sync-bar');
-const syncPercentage = document.getElementById('sync-percentage');
-const syncStatusText = document.getElementById('sync-status-text');
-const submitBtn = document.getElementById('submit-btn');
-const photoInput = document.getElementById('photos');
-const photoPreview = document.getElementById('photo-preview');
+// Elementos
+const els = {
+    statusBar: document.getElementById('status-bar'),
+    form: document.getElementById('car-form'),
+    gpsBtn: document.getElementById('get-gps-btn'),
+    gpsDisplay: document.getElementById('gps-display'),
+    pendingCount: document.getElementById('pending-count'),
+    countNumber: document.getElementById('count-number'),
+    syncBtn: document.getElementById('sync-btn'),
+    toast: document.getElementById('toast'),
+    syncStatus: document.getElementById('sync-status'),
+    syncBar: document.getElementById('sync-bar'),
+    syncPct: document.getElementById('sync-percentage'),
+    syncText: document.getElementById('sync-status-text'),
+    photoInput: document.getElementById('photos'),
+    photoPreview: document.getElementById('photo-preview'),
+    photoCount: document.getElementById('photo-count'),
+    areaInput: document.getElementById('area-ha'),
+    vegChips: document.querySelectorAll('.veg-chip')
+};
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', () => {
-    loadPendingSubmissions();
-    updateOnlineStatus();
-    setupEventListeners();
-    registerServiceWorker();
+    loadPending();
+    updateStatus();
+    setupEvents();
 });
 
-// Event Listeners
-function setupEventListeners() {
-    // Monitorar conexão
-    window.addEventListener('online', updateOnlineStatus);
-    window.addEventListener('offline', updateOnlineStatus);
-    
-    // Capturar GPS
-    getGpsBtn.addEventListener('click', captureGPS);
-    
-    // Submeter formulário
-    carForm.addEventListener('submit', handleSubmit);
-    
-    // Sincronizar
-    syncBtn.addEventListener('click', syncSubmissions);
-    
-    // Preview de fotos
-    photoInput.addEventListener('change', handlePhotoPreview);
-    
-    // Validação em tempo real
-    document.getElementById('area-ha').addEventListener('input', validateArea);
+function setupEvents() {
+    window.addEventListener('online', updateStatus);
+    window.addEventListener('offline', updateStatus);
+    els.gpsBtn.addEventListener('click', captureGPS);
+    els.form.addEventListener('submit', handleSubmit);
+    els.syncBtn.addEventListener('click', syncData);
+    els.photoInput.addEventListener('change', handlePhotos);
+    els.areaInput.addEventListener('input', validateArea);
+    els.areaInput.addEventListener('keydown', filterNumbers);
+    els.vegChips.forEach(chip => chip.addEventListener('click', () => toggleVeg(chip)));
 }
 
-// Validar área em tempo real
-function validateArea(e) {
-    const area = parseFloat(e.target.value);
-    const validationMsg = e.target.parentElement.nextElementSibling;
-    
-    if (e.target.value && area < 0.1) {
-        e.target.classList.add('border-red-500');
-        e.target.classList.remove('border-gray-200', 'border-green-500');
-        if (validationMsg) validationMsg.textContent = '⚠️ Área mínima: 0.1 ha';
-    } else if (e.target.value && area > 10000) {
-        e.target.classList.add('border-red-500');
-        e.target.classList.remove('border-gray-200', 'border-green-500');
-        if (validationMsg) validationMsg.textContent = '⚠️ Área muito grande, verifique';
-    } else if (e.target.value) {
-        e.target.classList.remove('border-red-500');
-        e.target.classList.add('border-green-500');
-        if (validationMsg) validationMsg.textContent = '✓ Área válida';
-    } else {
-        e.target.classList.remove('border-red-500', 'border-green-500');
-        e.target.classList.add('border-gray-200');
-        if (validationMsg) validationMsg.textContent = 'Mínimo: 0.1 ha';
-    }
+// Filtrar apenas números no campo área
+function filterNumbers(e) {
+    const allowed = ['Backspace','Delete','Tab','Escape','Enter','ArrowLeft','ArrowRight','ArrowUp','ArrowDown'];
+    if (allowed.includes(e.key)) return;
+    if ((e.ctrlKey || e.metaKey) && ['a','c','v','x'].includes(e.key.toLowerCase())) return;
+    if (!/^[0-9.,]$/.test(e.key)) e.preventDefault();
+    if ((e.key === '.' || e.key === ',') && els.areaInput.value.includes('.')) e.preventDefault();
 }
 
-// Preview de fotos
-function handlePhotoPreview(e) {
-    photoPreview.innerHTML = '';
-    const files = e.target.files;
-    
-    for (let i = 0; i < files.length && i < 6; i++) {
-        const file = files[i];
+function validateArea() {
+    const val = els.areaInput.value.replace(',','.').replace(/[^0-9.]/g,'');
+    els.areaInput.value = val;
+}
+
+// Chips de vegetação
+function toggleVeg(chip) {
+    const v = chip.dataset.value;
+    const idx = selectedVegetations.indexOf(v);
+    if (idx === -1) { selectedVegetations.push(v); chip.classList.add('selected'); }
+    else { selectedVegetations.splice(idx,1); chip.classList.remove('selected'); }
+    document.getElementById('vegetation-type').value = selectedVegetations.join(', ');
+}
+
+// Fotos
+function handlePhotos(e) {
+    selectedPhotos = selectedPhotos.concat(Array.from(e.target.files));
+    renderPhotos();
+    showToast(`📸 ${e.target.files.length} foto(s) adicionada(s)`);
+}
+
+function renderPhotos() {
+    els.photoPreview.innerHTML = '';
+    els.photoCount.textContent = `${selectedPhotos.length} foto${selectedPhotos.length!==1?'s':''}`;
+    selectedPhotos.forEach((file, i) => {
         const reader = new FileReader();
-        
-        reader.onload = (event) => {
-            const img = document.createElement('div');
-            img.className = 'relative aspect-square rounded-lg overflow-hidden bg-gray-200';
-            img.innerHTML = `
-                <img src="${event.target.result}" class="w-full h-full object-cover">
-                <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-xs p-1 text-center">
-                    Foto ${i + 1}
-                </div>
-            `;
-            photoPreview.appendChild(img);
+        reader.onload = ev => {
+            const div = document.createElement('div');
+            div.className = 'photo-item';
+            div.style.backgroundImage = `url(${ev.target.result})`;
+            div.innerHTML = `<div class="photo-remove" onclick="removePhoto(${i})">✕</div>`;
+            els.photoPreview.appendChild(div);
         };
-        
         reader.readAsDataURL(file);
-    }
-    
-    if (files.length > 0) {
-        showToast(`📸 ${files.length} foto(s) selecionada(s)`);
-    }
+    });
 }
 
-// Atualizar status online/offline
-function updateOnlineStatus() {
+function removePhoto(i) {
+    selectedPhotos.splice(i,1);
+    renderPhotos();
+    showToast('🗑️ Foto removida');
+}
+window.removePhoto = removePhoto;
+
+// Status online/offline
+function updateStatus() {
     if (navigator.onLine) {
-        statusBar.innerHTML = '<i class="fas fa-wifi mr-2"></i><span>ONLINE - Pronto para sincronizar</span>';
-        statusBar.className = 'fixed top-0 left-0 right-0 p-3 text-center text-sm font-bold z-50 status-online shadow-lg';
+        els.statusBar.textContent = '🟢 ONLINE - Pronto para sincronizar';
+        els.statusBar.className = 'status-bar status-online';
     } else {
-        statusBar.innerHTML = '<i class="fas fa-wifi-slash mr-2"></i><span>OFFLINE - Dados serão salvos localmente</span>';
-        statusBar.className = 'fixed top-0 left-0 right-0 p-3 text-center text-sm font-bold z-50 status-offline shadow-lg';
+        els.statusBar.textContent = '🔴 OFFLINE - Dados salvos localmente';
+        els.statusBar.className = 'status-bar status-offline';
     }
 }
 
-// Capturar coordenadas GPS
+// GPS
 function captureGPS() {
-    if (!navigator.geolocation) {
-        showToast('❌ Geolocalização não suportada neste dispositivo');
-        return;
-    }
-    
-    getGpsBtn.disabled = true;
-    getGpsBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Capturando...';
+    if (!navigator.geolocation) return showToast('❌ Geolocalização não suportada');
+    els.gpsBtn.disabled = true;
+    els.gpsBtn.textContent = '⏳ Capturando...';
     
     navigator.geolocation.getCurrentPosition(
-        (position) => {
-            currentGPS = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-                accuracy: position.coords.accuracy
-            };
-            
+        pos => {
+            currentGPS = { lat: pos.coords.latitude, lng: pos.coords.longitude, acc: pos.coords.accuracy };
             document.getElementById('gps-lat').value = currentGPS.lat;
             document.getElementById('gps-lng').value = currentGPS.lng;
-            
-            gpsDisplay.className = 'p-4 bg-green-50 border-2 border-green-500 rounded-lg';
-            gpsDisplay.innerHTML = `
-                <div class="flex items-center justify-center mb-2">
-                    <i class="fas fa-check-circle text-green-600 text-2xl mr-2"></i>
-                    <p class="text-green-800 font-bold">Localização capturada!</p>
-                </div>
-                <div class="grid grid-cols-2 gap-2 text-sm">
-                    <div class="bg-white p-2 rounded">
-                        <p class="text-xs text-gray-500">Latitude</p>
-                        <p class="font-mono font-bold text-green-700">${currentGPS.lat.toFixed(6)}</p>
-                    </div>
-                    <div class="bg-white p-2 rounded">
-                        <p class="text-xs text-gray-500">Longitude</p>
-                        <p class="font-mono font-bold text-green-700">${currentGPS.lng.toFixed(6)}</p>
-                    </div>
-                </div>
-                <p class="text-xs text-gray-600 mt-2 text-center">
-                    <i class="fas fa-crosshairs mr-1"></i>Precisão: ${currentGPS.accuracy.toFixed(0)}m
-                </p>
+            els.gpsDisplay.className = 'gps-display gps-success';
+            els.gpsDisplay.innerHTML = `
+                <div style="font-weight:600; margin-bottom:8px;">✅ Localizado!</div>
+                <div style="font-size:13px;">Lat: ${currentGPS.lat.toFixed(5)}<br>Lng: ${currentGPS.lng.toFixed(5)}</div>
             `;
-            
-            getGpsBtn.disabled = false;
-            getGpsBtn.innerHTML = '<i class="fas fa-redo mr-2"></i>Capturar Novamente';
-            showToast('✅ Localização capturada com sucesso!');
+            els.gpsBtn.disabled = false;
+            els.gpsBtn.textContent = '🗺️ Capturar Novamente';
+            showToast('✅ Localização capturada!');
         },
-        (error) => {
-            gpsDisplay.className = 'p-4 bg-red-50 border-2 border-red-500 rounded-lg';
-            gpsDisplay.innerHTML = `
-                <div class="flex items-center justify-center">
-                    <i class="fas fa-exclamation-circle text-red-600 text-2xl mr-2"></i>
-                    <p class="text-red-800 font-bold">Erro ao capturar</p>
-                </div>
-                <p class="text-sm text-red-700 mt-2 text-center">${error.message}</p>
-            `;
-            getGpsBtn.disabled = false;
-            getGpsBtn.innerHTML = '<i class="fas fa-redo mr-2"></i>Tentar Novamente';
-            showToast('❌ Não foi possível capturar localização');
+        err => {
+            els.gpsDisplay.className = 'gps-display';
+            els.gpsDisplay.innerHTML = `<div style="color:#f87171">❌ ${err.message}</div>`;
+            els.gpsBtn.disabled = false;
+            els.gpsBtn.textContent = '🗺️ Tentar Novamente';
+            showToast('❌ Erro ao capturar GPS');
         },
-        {
-            enableHighAccuracy: true,
-            timeout: 10000,
-            maximumAge: 0
-        }
+        { enableHighAccuracy: true, timeout: 10000 }
     );
 }
 
-// Submeter formulário
+// Submit
 async function handleSubmit(e) {
     e.preventDefault();
     
-    const submission = {
+    const area = parseFloat(els.areaInput.value);
+    if (isNaN(area) || area < 0.1) return showToast('❌ Área inválida (mín. 0.1 ha)');
+    if (selectedVegetations.length === 0) return showToast('❌ Selecione ao menos 1 vegetação');
+    if (!currentGPS) return showToast('❌ Capture o GPS antes de salvar');
+    
+    const sub = {
         id: Date.now().toString(),
         farmer_id: document.getElementById('farmer-id').value,
-        area_ha: parseFloat(document.getElementById('area-ha').value),
-        vegetation_type: document.getElementById('vegetation-type').value,
-        gps_coords: currentGPS ? [currentGPS.lat, currentGPS.lng] : null,
+        area_ha: area,
+        vegetation_types: selectedVegetations,
+        gps_coords: [currentGPS.lat, currentGPS.lng],
         notes: document.getElementById('notes').value,
+        photos_count: selectedPhotos.length,
         timestamp: new Date().toISOString(),
         synced: false
     };
     
-    // Validar GPS
-    if (!submission.gps_coords) {
-        showToast('❌ Capture a localização GPS antes de salvar');
-        getGpsBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        getGpsBtn.classList.add('ring-4', 'ring-red-500');
-        setTimeout(() => getGpsBtn.classList.remove('ring-4', 'ring-red-500'), 2000);
-        return;
-    }
+    pendingSubmissions.push(sub);
+    savePending();
     
-    // Salvar localmente
-    pendingSubmissions.push(submission);
-    savePendingSubmissions();
-    
-    // Limpar formulário
-    carForm.reset();
+    // Reset form
+    els.form.reset();
     currentGPS = null;
-    gpsDisplay.className = 'p-4 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 text-center';
-    gpsDisplay.innerHTML = `
-        <i class="fas fa-map-marker-alt text-2xl mb-2"></i>
-        <p class="text-sm">Clique no botão acima para capturar</p>
-    `;
-    photoPreview.innerHTML = '';
+    selectedPhotos = [];
+    selectedVegetations = [];
+    document.querySelectorAll('.veg-chip').forEach(c => c.classList.remove('selected'));
+    els.gpsDisplay.className = 'gps-display';
+    els.gpsDisplay.textContent = 'Clique acima para capturar';
+    els.photoPreview.innerHTML = '';
+    els.photoCount.textContent = '0 fotos';
     
-    // Feedback visual de sucesso
-    submitBtn.classList.add('pulse-success');
-    setTimeout(() => submitBtn.classList.remove('pulse-success'), 600);
-    
-    showToast('✅ Cadastro salvo! Será sincronizado quando houver conexão.');
-    
-    // Tentar sincronizar se online
-    if (navigator.onLine) {
-        await syncSubmissions();
-    }
+    showToast(`✅ Salvo! ${sub.photos_count} foto(s)`);
+    if (navigator.onLine) await syncData();
 }
 
-// Salvar no localStorage
-function savePendingSubmissions() {
+// Persistência
+function savePending() {
     localStorage.setItem('terrapilot_submissions', JSON.stringify(pendingSubmissions));
-    updatePendingCount();
+    updatePending();
+}
+function loadPending() {
+    const s = localStorage.getItem('terrapilot_submissions');
+    if (s) { pendingSubmissions = JSON.parse(s); updatePending(); }
+}
+function updatePending() {
+    const n = pendingSubmissions.filter(x => !x.synced).length;
+    els.countNumber.textContent = n;
+    els.pendingCount.classList.toggle('hidden', n === 0);
 }
 
-// Carregar do localStorage
-function loadPendingSubmissions() {
-    const stored = localStorage.getItem('terrapilot_submissions');
-    if (stored) {
-        pendingSubmissions = JSON.parse(stored);
-        updatePendingCount();
-    }
-}
-
-// Atualizar contador
-function updatePendingCount() {
-    const count = pendingSubmissions.filter(s => !s.synced).length;
+// Sync
+async function syncData() {
+    const unsynced = pendingSubmissions.filter(x => !x.synced);
+    if (!unsynced.length) return showToast('✅ Tudo sincronizado');
     
-    if (count > 0) {
-        countNumber.textContent = count;
-        pendingCountDiv.classList.remove('hidden');
-    } else {
-        pendingCountDiv.classList.add('hidden');
-    }
-}
-
-// Atualizar progresso de sincronização
-function updateSyncProgress(current, total, statusText) {
-    const percentage = Math.round((current / total) * 100);
-    syncBar.style.width = `${percentage}%`;
-    syncPercentage.textContent = `${percentage}%`;
-    syncStatusText.textContent = statusText || `Sincronizando ${current}/${total}...`;
-    syncStatus.classList.remove('hidden');
-}
-
-// Sincronizar com backend
-async function syncSubmissions() {
-    const unsynced = pendingSubmissions.filter(s => !s.synced);
-    
-    if (unsynced.length === 0) {
-        showToast('✅ Todos os cadastros já estão sincronizados');
-        return;
-    }
-    
-    showToast(`🔄 Iniciando sincronização de ${unsynced.length} cadastros...`);
-    
-    let successCount = 0;
+    showToast(`🔄 Sincronizando ${unsynced.length}...`);
+    let ok = 0;
     
     for (let i = 0; i < unsynced.length; i++) {
-        const submission = unsynced[i];
-        updateSyncProgress(i + 1, unsynced.length, `Enviando ${submission.farmer_id}...`);
+        const sub = unsynced[i];
+        els.syncText.textContent = `Enviando ${sub.farmer_id}...`;
+        els.syncPct.textContent = `${Math.round((i+1)/unsynced.length*100)}%`;
+        els.syncBar.style.width = `${Math.round((i+1)/unsynced.length*100)}%`;
+        els.syncStatus.classList.remove('hidden');
         
         try {
-            const response = await fetch('http://localhost:8000/api/validate', {
+            const r = await fetch('http://localhost:8000/api/validate', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(submission)
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(sub)
             });
-            
-            if (response.ok) {
-                submission.synced = true;
-                successCount++;
-            } else {
-                throw new Error(`HTTP ${response.status}`);
-            }
-        } catch (error) {
-            console.error('Erro ao sincronizar:', error);
-        }
+            if (r.ok) { sub.synced = true; ok++; }
+        } catch(e) { console.error(e); }
     }
     
-    savePendingSubmissions();
-    
-    if (successCount === unsynced.length) {
-        updateSyncProgress(unsynced.length, unsynced.length, 'Concluído!');
-        showToast(`✅ ${successCount} cadastro(s) sincronizado(s) com sucesso!`);
-        setTimeout(() => syncStatus.classList.add('hidden'), 2000);
-    } else {
-        showToast(`⚠️ ${successCount} de ${unsynced.length} sincronizados. Tente novamente.`);
-        setTimeout(() => syncStatus.classList.add('hidden'), 3000);
-    }
+    savePending();
+    els.syncStatus.classList.add('hidden');
+    showToast(ok === unsynced.length ? `✅ ${ok} sincronizado(s)!` : `⚠️ ${ok}/${unsynced.length} sincronizados`);
 }
 
-// Mostrar toast
-function showToast(message) {
-    toastMessage.textContent = message;
-    toast.classList.remove('hidden');
-    
-    setTimeout(() => {
-        toast.classList.add('hidden');
-    }, 3000);
-}
-
-// Registrar Service Worker (PWA)
-function registerServiceWorker() {
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js')
-            .then(() => console.log('✅ Service Worker registrado'))
-            .catch(err => console.log('❌ Erro ao registrar Service Worker:', err));
-    }
+// Toast
+function showToast(msg) {
+    els.toast.textContent = msg;
+    els.toast.classList.remove('hidden');
+    setTimeout(() => els.toast.classList.add('hidden'), 3000);
 }
