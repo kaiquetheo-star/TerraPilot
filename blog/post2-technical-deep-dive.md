@@ -240,3 +240,11 @@ uvicorn main:app --reload
 # Start frontend (separate terminal)
 cd frontend/pwa
 python3 -m http.server 8080
+
+Conclusion
+TerraPilot demonstrates that autonomous agents can handle complex real-world workflows while maintaining human oversight. The combination of Qwen Cloud's reasoning capabilities, MCP's tool integration, and Alibaba Cloud's infrastructure creates a powerful platform for environmental governance.
+The hackathon pushed us to build production-ready code under tight deadlines, and the result is a system that could genuinely help streamline Brazil's CAR validation process.
+Built for the Global AI Hackathon Series with Qwen Cloud | Track 4: Autopilot Agent
+Tags: #QwenCloud #MCP #AlibabaCloud #EnvironmentalAI #AutopilotAgent #OpenSource #DigitalPublicGood
+About the Author
+Kaique de Oliveira Theodoro is a self-taught developer passionate about using technology for social impact. TerraPilot is his first hackathon project, combining interests in AI, environmental policy, and rural development.
