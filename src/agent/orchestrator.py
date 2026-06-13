@@ -2,7 +2,7 @@ import os
 import json
 import asyncio
 from dotenv import load_dotenv
-from mcp_client import MCPClient
+from .mcp_client import MCPClient
 
 load_dotenv()
 

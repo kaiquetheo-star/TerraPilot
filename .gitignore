@@ -1,23 +1,79 @@
-# Python
+# ========================================
+# ARQUIVOS DE TESTE E AUTOMAÇÃO (NÃO SUBIR)
+# ========================================
+tests/
+tests/videos/
+tests/demo_photos/
+tests/demo_with_recording.py
+tests/demo_dashboard_only.py
+tests/join_videos.py
+tests/screenshots/
+*.webm
+*.mp4
+demo_photos/
+
+# ========================================
+# AMBIENTE VIRTUAL E DEPENDÊNCIAS
+# ========================================
 venv/
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+.Python
+env/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# Environment
+# ========================================
+# CREDENCIAIS E CONFIGURAÇÕES SENSÍVEIS
+# ========================================
 .env
 .env.local
+.env.production
+*.pem
+*.key
+secrets.json
+credentials.json
 
-# IDE
+# ========================================
+# IDE E FERRAMENTAS DE DESENVOLVIMENTO
+# ========================================
 .vscode/
 .idea/
 *.swp
 *.swo
-
-# OS
+*~
 .DS_Store
 Thumbs.db
 
-# Logs
+# ========================================
+# LOGS E TEMPORÁRIOS
+# ========================================
 *.log
+logs/
+temp/
+tmp/
+.cache/
+
+# ========================================
+# DADOS DE DESENVOLVIMENTO
+# ========================================
+*.sqlite3
+*.db
+data/
+uploads/

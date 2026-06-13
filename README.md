@@ -1,180 +1,186 @@
 # 🌱 TerraPilot
 
-**Autonomous AI agent for environmental validation using Qwen Cloud + MCP**
+**Autonomous AI agent for environmental validation using Qwen Cloud, MCP, and Alibaba Cloud.**
 
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.12+-green.svg)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.136+-009688.svg)](https://fastapi.tiangolo.com)
+[![Alibaba Cloud](https://img.shields.io/badge/Alibaba%20Cloud-Deployment%20Ready-ff6a00.svg)](alicloud/deployment.py)
 
 ## 🎯 Overview
 
-TerraPilot is an **Autopilot Agent** that automates validation of Brazil's Rural Environmental Registry (CAR), reducing processing time from weeks to minutes while maintaining human oversight for critical decisions.
+TerraPilot is an **Autopilot Agent** that automates validation of Brazil's Rural Environmental Registry (CAR), reducing processing time from weeks to minutes while preserving human oversight for critical decisions.
 
-Built for the **Global AI Hackathon Series with Qwen Cloud** - Track 4: Autopilot Agent
+The project is built for two simultaneous public-interest challenges:
+
+- **Alibaba Cloud Global AI Hackathon** - Track 4: Autopilot Agent
+- **haCARthon 2026** - ENAP/Governo Federal, CAR as a Digital Public Good
 
 ## ✨ Key Features
 
-- 📱 **Offline-First PWA**: Farmers capture data without internet connectivity
-- 🤖 **Qwen-Powered Validation**: Autonomous agent analyzes submissions using sophisticated reasoning
-- 🔧 **MCP Tool Integration**: Dynamic tool invocation via Model Context Protocol
-- 👩‍💼 **Human-in-the-Loop**: Complex cases route to environmental analysts
-- 📊 **Audit Trail**: Complete observability with Alibaba Cloud SLS
-- 🔓 **Open Source**: Apache 2.0 license, built as Digital Public Good
+- 📱 **Offline-first PWA** for farmers to capture CAR data without connectivity.
+- 🤖 **Qwen-powered validation** for autonomous environmental reasoning.
+- 🔧 **MCP tool integration** for protected-area and compliance checks.
+- 👩‍💼 **Human-in-the-loop dashboard** for analyst review.
+- 📊 **Audit trail** through Alibaba Cloud Simple Log Service.
+- 🔓 **Open source by design** under Apache 2.0.
 
 ## 🏗️ Architecture
-[Seu Raimundo - PWA] → [FastAPI on ECS] → [Qwen Agent] → [MCP Servers]
-↓
-[Dashboard Luana - HITL]
-↓
-[Tablestore + SLS - Observability]
 
-### Tech Stack
+```text
+[Farmer PWA] ──sync──> [FastAPI Backend on ECS] ──prompt──> [Qwen/DashScope]
+      │                         │                              │
+      │                         ├──MCP tools───────────────────┘
+      │                         ├──CAR memory──> [Tablestore + Geo Index]
+      │                         ├──audit logs──> [SLS]
+      │                         └──photos──────> [OSS]
+      │
+      └──────────────review events────────────> [Analyst Dashboard]
+```
 
-- **Backend**: FastAPI, Uvicorn, Pydantic v2
-- **AI**: Qwen Cloud API (qwen-max, qwen-plus, qwen-turbo)
-- **Tools**: Model Context Protocol (MCP)
-- **Database**: Alibaba Cloud Tablestore
-- **Observability**: Alibaba Cloud Simple Log Service (SLS)
-- **Storage**: Alibaba Cloud Object Storage Service (OSS)
-- **Frontend**: Progressive Web App (PWA) with Tailwind CSS
+See the full technical architecture in [`docs/architecture.md`](docs/architecture.md).
+
+## ☁️ Alibaba Cloud Deployment
+
+**Status:** Code ready, awaiting account verification. Alibaba Cloud identity verification was submitted on **08/06/2026**. The ECS instance will be provisioned as soon as verification completes. All services were tested locally with mocks that mirror production behavior.
+
+Services used:
+
+- **ECS:** hosts the Dockerized FastAPI backend.
+- **Tablestore:** stores CAR submissions, decisions, and geospatial index fields.
+- **Simple Log Service (SLS):** records structured Qwen/MCP decisions for auditability.
+- **Object Storage Service (OSS):** stores farmer evidence photos and documents.
+- **Qwen via DashScope:** powers the Autopilot Agent reasoning flow.
+
+Quick ECS deploy:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/kaiquetheodoro/TerraPilot/main/deploy/ecs-deploy.sh | bash
+```
+
+Required environment variables are documented in [`.env.example`](.env.example):
+
+```text
+ALIBABA_CLOUD_ACCESS_KEY_ID
+ALIBABA_CLOUD_ACCESS_KEY_SECRET
+ECS_INSTANCE_ID
+ECS_REGION
+TABLESTORE_ENDPOINT
+TABLESTORE_INSTANCE
+TABLESTORE_TABLE
+SLS_ENDPOINT
+SLS_PROJECT
+SLS_LOGSTORE
+OSS_ENDPOINT
+OSS_BUCKET
+QWEN_API_KEY
+QWEN_MODEL
+ENVIRONMENT
+LOG_LEVEL
+```
+
+Proof files for the Alibaba Cloud hackathon form:
+
+- Main proof: [`alicloud/deployment.py`](alicloud/deployment.py)
+- Container proof: [`Dockerfile`](Dockerfile)
+- ECS deploy automation: [`deploy/ecs-deploy.sh`](deploy/ecs-deploy.sh)
+
+Hackathon URLs:
+
+- `https://github.com/kaiquetheodoro/TerraPilot/blob/main/alicloud/deployment.py`
+- `https://github.com/kaiquetheodoro/TerraPilot/blob/main/Dockerfile`
+- `https://github.com/kaiquetheodoro/TerraPilot/tree/main/deploy`
+
+## 🧰 Tech Stack
+
+- **Backend:** FastAPI, Uvicorn, Pydantic v2
+- **AI:** Qwen Cloud / DashScope
+- **Agent tools:** Model Context Protocol (MCP)
+- **Cloud:** Alibaba Cloud ECS, Tablestore, SLS, OSS
+- **Frontend:** Progressive Web App and analyst dashboard
+- **Automation:** Docker, Playwright demo recording
 
 ## 🚀 Quick Start
 
-### Prerequisites
+Prerequisites:
 
 - Python 3.12+
-- Alibaba Cloud account with Qwen Cloud API access
 - Git
+- Alibaba Cloud account with Qwen/DashScope access for production mode
 
-### Installation
+Install and run locally:
 
 ```bash
-# Clone repository
-git clone https://github.com/your-username/TerraPilot.git
+git clone https://github.com/kaiquetheodoro/TerraPilot.git
 cd TerraPilot
-
-# Create virtual environment
 python3 -m venv venv
-source venv/bin/activate  # Linux/Mac
-# or: venv\Scripts\activate  # Windows
-
-# Install dependencies
+source venv/bin/activate
 pip install -r requirements.txt
-
-# Configure environment
 cp .env.example .env
+python alicloud/deployment.py
+```
 
-# Edit .env with your Qwen Cloud API key
+Start the backend API:
 
-#Running Locally
-1. Start Backend API:
-cd src/api
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
-API docs available at: http://localhost:8000/docs
-2. Start PWA Frontend:
-cd frontend/pwa
-python3 -m http.server 8080
-PWA available at: http://localhost:8080
-3. Start Analyst Dashboard:
-cd frontend/dashboard
-python3 -m http.server 8081
-Dashboard available at: http://localhost:8081
+```bash
+uvicorn src.api.main:app --reload --host 0.0.0.0 --port 8000
+```
 
-#📖 Usage
-For Farmers (PWA)
-Open PWA on mobile device
-Fill property details (ID, area, vegetation type)
-Capture GPS coordinates
-Take photos of property
-Save submission (works offline!)
-Sync when internet available
-For Analysts (Dashboard)
-Open dashboard in browser
-Review submissions flagged for manual review
-View AI reasoning and confidence scores
-Approve or reject with one click
-All decisions logged for audit
+Start the PWA and dashboard:
 
-#🔧 MCP Servers
-TerraPilot includes custom MCP servers for environmental data:
-Protected Areas Server
-Provides tool: check_protected_area(lat, lng)
-Queries ICMBio/Funai databases
-Returns overlap analysis with protected areas
-Supports UC, TI, APP detection
+```bash
+cd frontend/pwa && python3 -m http.server 8080
+cd frontend/dashboard && python3 -m http.server 8081
+```
 
-#🧪 Testing
-# Run agent tests
-cd src/agent
-python3 orchestrator.py
+## 📖 Usage
 
-# Test MCP client
-python3 mcp_client.py
+Farmers use the PWA to fill property details, capture GPS coordinates, attach photos, save offline, and sync later. Analysts use the dashboard to review submissions flagged by the agent, inspect reasoning, and approve or reject with a recorded audit trail.
 
-# Test API endpoint
-curl -X POST http://localhost:8000/api/validate \
-  -H "Content-Type: application/json" \
-  -d '{
-    "farmer_id": "test_001",
-    "gps_coords": [-15.7801, -47.9292],
-    "area_ha": 50,
-    "vegetation_type": "Cerrado"
-  }'
+## 🔧 MCP Servers
 
-#📊 API Endpoints
+TerraPilot includes custom MCP servers for environmental data. The protected areas server exposes `check_protected_area(lat, lng)` to detect overlap with conservation units, indigenous territories, and protected permanent preservation areas.
 
-Method
-Endpoint
-Description
-GET
-/health
-Health check
-POST
-/api/validate
-Validate CAR submission
-GET
-/docs
-OpenAPI documentation
+## 🧪 Testing
 
-#⚠️ Known Limitations
-Qwen API Access
-During development, we encountered 403 AccessDenied.Unpurchased errors. The system includes robust mock mode for development without API dependencies:
-if not self.api_key or self.api_error:
-    self.use_mock = True  # Seamless fallback
+```bash
+python alicloud/deployment.py
+python3 -m py_compile alicloud/deployment.py
+curl http://localhost:8000/health
+```
 
-Once API access is resolved, system automatically switches to real Qwen calls.
-ECS Deployment
-Alibaba Cloud identity verification pending. Architecture designed for seamless migration with environment variables and Docker deployment scripts.
+Demo automation:
 
-#🗺️ Roadmap
-Qwen-VL integration for satellite image analysis
-Connect to official SICAR APIs
-Multi-language support (ES, EN)
-Edge computing for fully offline operation
-Federated learning across regions
-Mobile app (React Native)
+```bash
+python3 tests/demo_with_recording.py --headless=false
+```
 
-#🤝 Contributing
-Contributions welcome! This is a Digital Public Good.
-Fork the repository
-Create feature branch (git checkout -b feature/AmazingFeature)
-Commit changes (git commit -m 'Add AmazingFeature')
-Push to branch (git push origin feature/AmazingFeature)
-Open Pull Request
+## ⚠️ Known Limitations
 
-#📝 License
-Apache License 2.0 - See LICENSE for details
+Qwen and Alibaba Cloud production calls are credential-gated. Until account verification completes, TerraPilot runs local mocks with the same request/response shape used by the production integrations. Once credentials and ECS are active, the same environment variables switch the backend to production clients.
 
-#🙏 Acknowledgments
-Alibaba Cloud for Qwen Cloud and hackathon platform
-Brazilian Government for CAR system and environmental data
-haCARthon organizers for problem definition
-Open source community for tools and inspiration
+## 🗺️ Roadmap
 
-#📧 Contact
-Repository: github.com/kaiquetheo-star/TerraPilot
-Blog: Technical posts on Dev.to
-Hackathon: Devpost submission
+- Qwen-VL integration for satellite image analysis.
+- Connection to official SICAR APIs.
+- Multi-language support for Portuguese, Spanish, and English.
+- Edge-first workflows for rural offline operation.
+- Federated learning across regions.
 
-#Built with ❤️ for environmental governance and rural inclusion
-Keywords: Qwen Cloud, MCP, Alibaba Cloud, Environmental AI, Autopilot Agent, CAR, Rural Development, Open Source, Digital Public Good
+## 🤝 Contributing
+
+Contributions are welcome. TerraPilot is designed as a Digital Public Good for environmental governance and rural inclusion.
+
+## 📝 License
+
+Apache License 2.0. See [`LICENSE`](LICENSE) for details.
+
+## 🙏 Acknowledgments
+
+Thanks to Alibaba Cloud, Qwen Cloud, the haCARthon organizers, ENAP, and the Brazilian public-sector teams working to modernize CAR.
+
+## 📧 Contact
+
+Repository: `github.com/kaiquetheodoro/TerraPilot`
+
+Keywords: Qwen Cloud, MCP, Alibaba Cloud, Environmental AI, Autopilot Agent, CAR, Rural Development, Open Source, Digital Public Good.
