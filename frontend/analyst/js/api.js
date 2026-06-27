@@ -1,6 +1,112 @@
 const API_BASE = 'http://localhost:8001';
+const isGitHubPages = window.location.hostname.includes('github.io');
+
+function mockAnalystRequest(path, options = {}) {
+  const body = options.body ? JSON.parse(options.body) : null;
+
+  if (path === '/api/analyst/prioritize') {
+    const cases = Array.isArray(body) ? body : [];
+    const prioritized = cases.map((c, i) => ({
+      case: c,
+      priority_score: Math.max(10, 95 - i * 8),
+      priority_level: i < 2 ? 'critical' : i < 5 ? 'high' : 'medium',
+      reasons: ['Erro de alto impacto', 'Produtor engajado'],
+      recommended_action: 'Enviar notificação traduzida via WhatsApp',
+    }));
+    return {
+      cases: prioritized,
+      summary: {
+        total_cases: cases.length,
+        by_priority_level: {
+          critical: prioritized.filter((p) => p.priority_level === 'critical').length,
+          high: prioritized.filter((p) => p.priority_level === 'high').length,
+          medium: prioritized.filter((p) => p.priority_level === 'medium').length,
+        },
+        oldest_case_days: Math.max(...cases.map((c) => c.days_since_notification || 0), 0),
+      },
+    };
+  }
+
+  if (path === '/api/analyst/detect-patterns') {
+    const records = Array.isArray(body) ? body : [];
+    return {
+      total_records_analyzed: records.length,
+      patterns: [
+        { issue_code: 'APP_RIVER_WIDTH', count: Math.ceil(records.length * 0.4), label: 'APP de rio' },
+        { issue_code: 'RL_PERCENTAGE', count: Math.ceil(records.length * 0.3), label: 'Reserva Legal (%)' },
+      ],
+      regional_hotspots: [{ municipality: 'Itaberaba-BA', count: 3 }],
+      biome_breakdown: [{ biome: 'Caatinga', count: records.length }],
+    };
+  }
+
+  if (path === '/api/analyst/templates') {
+    return { templates: ['notification_received', 'reminder', 'approval'] };
+  }
+
+  if (path === '/api/analyst/render-template') {
+    const ctx = body?.context || {};
+    return {
+      channel: body?.channel || 'whatsapp',
+      rendered: `Olá ${ctx.name || 'produtor'}! ${ctx.summary || 'Sua notificação foi traduzida.'}`,
+    };
+  }
+
+  if (path === '/api/analyst/impact-report') {
+    const actions = body?.actions || [];
+    const fixed = actions.filter((a) => a.fixed);
+    const credit = fixed.reduce((s, a) => s + (a.credit_rural_value_brl || 0), 0);
+    return {
+      analyst_id: body?.analyst_id || 'luana_01',
+      period_days: 30,
+      metrics: {
+        producers_helped: new Set(fixed.map((a) => a.producer_id)).size,
+        cases_resolved: fixed.length,
+        avg_days_to_fix: 5.2,
+        first_try_success_rate: 0.68,
+        credit_rural_unlocked_brl: credit,
+        co2_sequestered_tons: 12.4,
+      },
+      success_stories: [
+        { producer_name: 'Seu Raimundo', municipality: 'Itaberaba-BA', outcome: 'CAR aprovado em 3 dias' },
+      ],
+      narrative: 'Nos últimos 30 dias, a Luana ajudou produtores a destravar crédito rural e regularizar o CAR.',
+    };
+  }
+
+  if (path === '/api/analyst/decision-support') {
+    return {
+      case_id: body?.case_id || 'demo',
+      complexity: 'high',
+      options: [
+        { id: 'regularize', label: 'Regularizar via retificação', legal_basis: 'Art. 12, Lei 12.651/2012' },
+        { id: 'pra', label: 'Aderir ao PRA', legal_basis: 'Art. 59, Lei 12.651/2012' },
+      ],
+      recommendation: 'Apresentar opções ao produtor — decisão final da analista.',
+    };
+  }
+
+  if (path === '/api/analyst/unified-view') {
+    const base = typeof MOCK_UNIFIED_CASE !== 'undefined' ? MOCK_UNIFIED_CASE : {};
+    return {
+      ...base,
+      ...body,
+      timeline: [
+        { event_type: 'car_submitted', timestamp: '2026-01-15T10:00:00', summary: 'CAR submetido' },
+        { event_type: 'notification_sent', timestamp: '2026-02-01T14:00:00', summary: 'Notificação APP enviada' },
+        { event_type: 'producer_response', timestamp: '2026-02-03T16:20:00', summary: 'Produtor respondeu no WhatsApp' },
+        { event_type: 'approved', timestamp: '2026-03-10T15:30:00', summary: 'CAR aprovado' },
+      ],
+    };
+  }
+
+  return { demo: true, path };
+}
 
 async function request(path, options = {}) {
+  if (isGitHubPages) {
+    return mockAnalystRequest(path, options);
+  }
   const resp = await fetch(`${API_BASE}${path}`, {
     headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
     ...options,

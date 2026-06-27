@@ -1,4 +1,4 @@
-const CACHE_NAME = 'terrapilot-v8-regularizacao';
+const CACHE_NAME = 'terrapilot-v9-github-pages';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -6,8 +6,10 @@ const STATIC_ASSETS = [
   './manifest.json',
   './css/main.css',
   './css/accessibility.css',
+  './js/base-path.js',
   './js/router.js',
   './js/api.js',
+  './js/api-mock.js',
   './js/offline-manager.js',
   './js/mock-prefill.js',
   './js/accessibility.js',

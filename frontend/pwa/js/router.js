@@ -39,7 +39,7 @@ const TerraPilotRouter = (() => {
   }
 
   async function loadComponent(name) {
-    const res = await fetch(`components/${name}.html`);
+    const res = await fetch(terrapilotUrl(`components/${name}.html`));
     if (!res.ok) return '';
     return res.text();
   }
@@ -52,7 +52,7 @@ const TerraPilotRouter = (() => {
     main.innerHTML = '<p class="text-muted" role="status">Carregando...</p>';
 
     try {
-      const res = await fetch(`views/${viewPath}.html`);
+      const res = await fetch(terrapilotUrl(`views/${viewPath}.html`));
       if (!res.ok) throw new Error('View não encontrada');
       main.innerHTML = await res.text();
       document.title = `TerraPilot — ${main.querySelector('[data-page-title]')?.textContent || 'Assistente CAR'}`;

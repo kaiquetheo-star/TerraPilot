@@ -1,6 +1,10 @@
 /**
  * TerraPilot PWA — app principal e handlers de views.
  */
+
+// Verifica se está rodando em GitHub Pages (sem backend)
+const isGitHubPages = window.location.hostname.includes('github.io');
+
 const TerraPilotApp = (() => {
   let gpsCoords = null;
   let lastTranslation = null;
@@ -93,6 +97,14 @@ const TerraPilotApp = (() => {
   function atualizarStatusConexao() {
     const badge = document.getElementById('connection-status');
     const homeBadge = document.getElementById('offline-badge');
+    if (isGitHubPages) {
+      if (badge) {
+        badge.className = 'status-badge online';
+        badge.innerHTML = '🌐 Modo demonstração — dados simulados (GitHub Pages)';
+      }
+      if (homeBadge) homeBadge.textContent = '🌐 Modo demonstração';
+      return;
+    }
     if (navigator.onLine) {
       if (badge) {
         badge.className = 'status-badge online';
@@ -578,8 +590,9 @@ const TerraPilotApp = (() => {
   });
 
   function registerServiceWorker() {
+    if (isGitHubPages) return;
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./service-worker.js').catch(console.warn);
+      navigator.serviceWorker.register(terrapilotUrl('service-worker.js')).catch(console.warn);
     }
   }
 

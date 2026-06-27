@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TerraPilot — Demonstração</title>
+  <meta name="description" content="Demonstração online do TerraPilot — haCARthon 2026">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: linear-gradient(160deg, #f4f7f2 0%, #e8efe4 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      color: #1a2e1f;
+    }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(45, 95, 63, 0.12);
+      max-width: 520px;
+      width: 100%;
+      padding: 40px 32px;
+      text-align: center;
+    }
+    h1 { font-size: 1.75rem; margin: 12px 0 8px; color: #2d5f3f; }
+    p { color: #4a5f4e; line-height: 1.6; margin-bottom: 24px; }
+    .links { display: flex; flex-direction: column; gap: 12px; }
+    a {
+      display: block;
+      padding: 16px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    a:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .btn-pwa { background: #2d5f3f; color: #fff; }
+    .btn-analyst { background: #d4a574; color: #1a2e1f; }
+    .btn-wa { background: #25d366; color: #fff; }
+    .note { font-size: 0.85rem; color: #6b7c6f; margin-top: 24px; }
+    .logo { font-size: 3rem; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo" aria-hidden="true">🌱</div>
+    <h1>TerraPilot</h1>
+    <p>Assistente de regularização do CAR — demonstração online (dados simulados)</p>
+    <div class="links">
+      <a class="btn-pwa" href="pwa/index.html">📱 PWA do Produtor</a>
+      <a class="btn-analyst" href="analyst/index.html">👩‍💼 Painel da Analista</a>
+      <a class="btn-wa" href="pwa/whatsapp-simulator.html">💬 Simulador WhatsApp</a>
+    </div>
+    <p class="note">Modo demonstração — sem backend. Para API real, veja o README no GitHub.</p>
+  </div>
+</body>
+</html>

@@ -17,6 +17,17 @@
   <img src="https://img.shields.io/badge/FastAPI-0.136+-009688.svg">
 </p>
 
+## 🚀 Demonstração Online
+
+**Acesse o TerraPilot online (sem instalar nada):**
+
+👉 **[https://kaiquetheo-star.github.io/TerraPilot](https://kaiquetheo-star.github.io/TerraPilot)**
+
+- 📱 **PWA do Produtor**: [/pwa/index.html](https://kaiquetheo-star.github.io/TerraPilot/pwa/index.html)
+- 👩‍💼 **Painel da Analista**: [/analyst/index.html](https://kaiquetheo-star.github.io/TerraPilot/analyst/index.html)
+
+**Nota**: A demonstração online usa dados mockados para funcionar 100% no navegador. Para usar com backend real, siga as instruções de instalação local abaixo.
+
 <p align="center">
   📋 <a href="docs/dpg-submission.md"><strong>Submissão DPG</strong></a>
   · 🔒 <a href="docs/privacy.md">Privacidade (LGPD)</a>
@@ -535,6 +546,12 @@ Acesse:
 - 📱 **Produtor:** http://localhost:8080
 - 👩‍💼 **Analista:** http://localhost:8081
 - 📖 **API Docs:** http://localhost:8001/docs
+
+### Demo online (GitHub Pages)
+
+Veja a seção **[🚀 Demonstração Online](#-demonstração-online)** no topo deste README.
+
+O workflow `.github/workflows/github-pages.yml` publica `frontend/` (PWA + painel analista + página inicial).
 
 ### Stack técnico
 

@@ -1,8 +1,14 @@
 /**
  * Cliente API TerraPilot — online com fallback offline local.
+ * Em GitHub Pages usa MockAPI (sem backend FastAPI).
  */
 const TerraPilotAPI = (() => {
+  const isGitHubPages = window.location.hostname.includes('github.io');
   const API_BASE = localStorage.getItem('terrapilot_api') || 'http://localhost:8001';
+
+  function useMock() {
+    return isGitHubPages && window.MockAPI;
+  }
 
   async function request(path, options = {}) {
     const url = `${API_BASE}${path}`;
@@ -23,6 +29,9 @@ const TerraPilotAPI = (() => {
   }
 
   async function validateAPP(riverWidthM) {
+    if (useMock()) {
+      return window.MockAPI.calculateAppWidth(Number(riverWidthM));
+    }
     try {
       return await request('/api/rules/app', {
         method: 'POST',
@@ -85,6 +94,16 @@ const TerraPilotAPI = (() => {
   }
 
   async function translateNotification(technicalText) {
+    if (useMock()) {
+      const r = await window.MockAPI.translateNotification(technicalText);
+      return {
+        simple_text: r.human_explanation,
+        issue_code: r.issue_code === 'UNKNOWN' ? null : r.issue_code,
+        original_text: technicalText,
+        legal_ref: r.legal_ref || null,
+        fix_step_count: r.fix_steps?.length || null,
+      };
+    }
     try {
       return await request('/api/translate/notification', {
         method: 'POST',
@@ -131,6 +150,18 @@ const TerraPilotAPI = (() => {
   }
 
   async function getGuide(issueCode, params = {}) {
+    if (useMock()) {
+      const g = await window.MockAPI.getRetificationGuide(issueCode, params.area_ha || 2);
+      return {
+        title: g.title,
+        benefit: g.legal_explanation || '',
+        steps: (g.steps || []).map((s) => ({
+          step_number: s.step,
+          instruction: s.description,
+          illustration: s.illustration,
+        })),
+      };
+    }
     const qs = new URLSearchParams(params).toString();
     try {
       return await request(`/api/guide/${issueCode}${qs ? '?' + qs : ''}`);
@@ -143,6 +174,20 @@ const TerraPilotAPI = (() => {
   }
 
   async function prefillSuggest(municipality, lat, lon, radiusKm = 2) {
+    if (useMock()) {
+      const mock = window.PREFILL_MOCK || { suggestions: [], mode: 'offline' };
+      return {
+        human_message: 'Sugestões de demonstração (modo GitHub Pages).',
+        suggestions: (mock.suggestions || []).map((s) => ({
+          label: s.type === 'APP' ? 'Área de Preservação' : s.type === 'RL' ? 'Reserva Legal' : s.type,
+          type: s.type,
+          area_ha: s.area_ha,
+          source: s.source,
+          note: s.note,
+          distance_km: 0.5,
+        })),
+      };
+    }
     return await request('/api/prefill/suggest', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -156,6 +201,20 @@ const TerraPilotAPI = (() => {
   }
 
   async function getProgress(propertyId) {
+    if (useMock()) {
+      const p = await window.MockAPI.getProgress(propertyId);
+      const total = p.total_issues || 1;
+      const resolved = p.resolved_issues || 0;
+      return {
+        progress: {
+          resolved_count: resolved,
+          total_count: total,
+          percent: Math.round((resolved / total) * 100),
+          bar_message: `${resolved} de ${total} etapas resolvidas`,
+        },
+        history: p.completed_issues || [],
+      };
+    }
     try {
       return await request(`/api/progress/${propertyId}`);
     } catch {
@@ -165,6 +224,12 @@ const TerraPilotAPI = (() => {
   }
 
   async function getFAQ(profile = {}) {
+    if (useMock()) {
+      return window.MockAPI.getContextualFaq({
+        property_size_ha: Number(profile.property_size_ha) || 50,
+        biome: profile.biome || 'Cerrado',
+      });
+    }
     const qs = new URLSearchParams(profile).toString();
     try {
       return await request(`/api/knowledge/faq${qs ? '?' + qs : ''}`);
@@ -242,6 +307,9 @@ const TerraPilotAPI = (() => {
   }
 
   async function sendWhatsApp(phone, message) {
+    if (useMock()) {
+      return window.MockAPI.sendWhatsApp(phone, message);
+    }
     return await request('/api/channels/whatsapp/send', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -265,13 +333,14 @@ const TerraPilotAPI = (() => {
   }
 
   async function loadJSON(path) {
-    const res = await fetch(path);
+    const res = await fetch(terrapilotUrl(path));
     if (!res.ok) throw new Error(`Falha ao carregar ${path}`);
     return res.json();
   }
 
   return {
     API_BASE,
+    isGitHubPages,
     validateAPP,
     validateRL,
     translateNotification,
