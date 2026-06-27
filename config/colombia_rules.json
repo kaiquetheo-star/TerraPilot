@@ -1,0 +1,50 @@
+{
+  "country": "Colombia",
+  "country_code": "CO",
+  "law": "Decreto 2811 de 1974 (Código de Recursos Naturales Renovables) + Ley 1450 de 2011",
+  "registry_system": "RUP (Registro Único de Predios Rurales)",
+  "governing_body": "Ministerio de Ambiente y Desarrollo Sostenible",
+  "status": "template_basico",
+  "notes": "Regras simplificadas para demonstração da arquitetura parametrizável. Requer validação com especialista em legislação ambiental colombiana antes de uso em produção.",
+  "ecological_regions": {
+    "Amazonia": {"forest_reserve_percentage": 80},
+    "Andina": {"forest_reserve_percentage": 30},
+    "Orinoquia": {"forest_reserve_percentage": 20},
+    "Caribe": {"forest_reserve_percentage": 20},
+    "Pacifico": {"forest_reserve_percentage": 25}
+  },
+  "protection_areas": {
+    "water_bodies": [
+      {"min_width_m": 0, "max_width_m": 5, "buffer_zone_m": 30},
+      {"min_width_m": 5, "max_width_m": 10, "buffer_zone_m": 50},
+      {"min_width_m": 10, "max_width_m": 50, "buffer_zone_m": 100},
+      {"min_width_m": 50, "max_width_m": null, "buffer_zone_m": 200}
+    ],
+    "springs": {
+      "radius_m": 50
+    },
+    "wetlands": {
+      "buffer_zone_m": 30
+    }
+  },
+  "key_articles": [
+    {
+      "article": "Art. 204-206 Decreto 2811/1974",
+      "topic": "Áreas forestales protectoras",
+      "description": "Obrigatoriedade de manter faixas de proteção em torno de corpos d'água"
+    },
+    {
+      "article": "Ley 1450 de 2011",
+      "topic": "Registro Único de Predios Rurales",
+      "description": "Obrigatoriedade de registro de propriedades rurais com informações ambientais"
+    }
+  ],
+  "adaptações_necessárias": [
+    "Validar percentuais de reserva florestal com MinAmbiente",
+    "Confirmar regras específicas para zonas de páramo (proteção especial)",
+    "Adaptar dicionário de tradução para espanhol colombiano",
+    "Verificar regras para territorios indígenas e afrodescendientes",
+    "Integrar com base de dados oficial do RUP"
+  ],
+  "contact_suggested": "Ministerio de Ambiente y Desarrollo Sostenible - Dirección de Bosques, Biodiversidad y Servicios Ecosistémicos"
+}

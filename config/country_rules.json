@@ -51,19 +51,18 @@
       "notes": "Implementação completa no haCARthon 2026. Motor de regras em src/rules/, tradutor e guias operacionais."
     },
     "CO": {
-      "status": "template",
+      "status": "template_basico",
       "name": "Colômbia",
-      "law": "Ley 1930 de 2018 (Gestión del Riesgo de Desastres) + normativa ambiental sectorial",
-      "registry_system": "Registro Único de Predios Rurales (RUPR)",
-      "potential_partner": "Ministerio de Ambiente y Desarrollo Sostenible",
-      "notes": "Template estrutural pronto. Regras de APP e RL colombianas ainda não codificadas — requer validação jurídica local antes de uso em produção."
+      "law": "Decreto 2811 de 1974 + Ley 1450 de 2011",
+      "registry_system": "RUP (Registro Único de Predios Rurales)",
+      "rules_file": "config/colombia_rules.json",
+      "notes": "Template com regras simplificadas em config/colombia_rules.json. Requer validação jurídica local antes de uso em produção. Não há parceria institucional formal."
     },
     "PE": {
       "status": "research",
       "name": "Peru",
       "law": "Ley Forestal y de Fauna Silvestre (Ley Nº 29763)",
       "registry_system": "Registro Nacional de Áreas Naturales Protegidas / SERFOR",
-      "potential_partner": "MINAM",
       "notes": "Em análise de equivalência entre CAR brasileiro e cadastro florestal peruano. Sem implementação de regras ainda."
     },
     "ID": {
@@ -71,7 +70,6 @@
       "name": "Indonésia",
       "law": "Undang-Undang No. 41/1999 tentang Kehutanan",
       "registry_system": "Sistem Informasi Perhutanan (SIP)",
-      "potential_partner": "Ministry of Environment and Forestry",
       "notes": "Pesquisa inicial sobre adaptação do motor de regras para gestão florestal indonésia. Não iniciado."
     },
     "MX": {
@@ -79,8 +77,7 @@
       "name": "México",
       "law": "Ley General de Desarrollo Forestal Sustentable",
       "registry_system": "Registro Agrario Nacional (RAN)",
-      "potential_partner": "SEMARNAT",
-      "notes": "Planejado para fase pós-haCARthon. Estrutura JSON reservada; implementação depende de parceiro institucional."
+      "notes": "Planejado para fase pós-haCARthon. Estrutura JSON reservada; implementação depende de validação jurídica local."
     }
   }
 }

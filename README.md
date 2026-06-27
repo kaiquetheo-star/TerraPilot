@@ -233,9 +233,11 @@ Com base em dados do **Painel de Regularização Ambiental do Serviço Florestal
 
 O TerraPilot foi projetado desde o início para ser um **Bem Público Digital (DPG)** replicável em outros países que enfrentam desafios semelhantes na gestão territorial rural.
 
-### Motor de Regras Parametrizável
+### Arquitetura Parametrizável
 
 O motor de regras é **configurável via JSON externo**, não hardcoded para o Brasil:
+
+**`config/country_rules.json`** (entrada BR — implementado):
 
 ```json
 {
@@ -243,15 +245,9 @@ O motor de regras é **configurável via JSON externo**, não hardcoded para o B
   "law": "Lei 12.651/2012",
   "biomes": {
     "Amazonia Legal": {
-      "rl_percentage": {
-        "floresta": 80,
-        "cerrado": 35,
-        "campos_gerais": 20
-      }
+      "rl_percentage": {"floresta": 80, "cerrado": 35, "campos_gerais": 20}
     },
-    "Outros": {
-      "rl_percentage": 20
-    }
+    "Outros": {"rl_percentage": 20}
   },
   "app_rules": {
     "river_width_m": [
@@ -263,15 +259,43 @@ O motor de regras é **configurável via JSON externo**, não hardcoded para o B
 }
 ```
 
-### Roadmap de Adaptação Internacional
+**`config/colombia_rules.json`** (template básico criado):
 
-| País | Sistema Equivalente | Status | Parceiro Potencial |
-|------|---------------------|--------|-------------------|
-| 🇧🇷 Brasil | CAR (Lei 12.651/2012) | ✅ Implementado | ENAP/MGI/FBDS |
-| 🇨🇴 Colômbia | Registro Único de Predios Rurales | 📋 Template pronto | Ministerio de Ambiente |
-| 🇵🇪 Peru | Registro Nacional de Áreas Naturales | 📋 Em análise | MINAM |
-| 🇮🇩 Indonésia | Sistem Informasi Perhutanan | 🔬 Pesquisa | Ministry of Environment |
-| 🇲🇽 México | Registro Agrario Nacional | 📋 Planejado | SEMARNAT |
+```json
+{
+  "country": "Colombia",
+  "law": "Decreto 2811 de 1974 + Ley 1450 de 2011",
+  "registry_system": "RUP (Registro Único de Predios Rurales)",
+  "ecological_regions": {
+    "Amazonia": {"forest_reserve_percentage": 80},
+    "Andina": {"forest_reserve_percentage": 30}
+  }
+}
+```
+
+O carregador em `src/rules/rule_loader.py` lê ambos os schemas sem alterar o código do motor brasileiro.
+
+### Como Adaptar para Outro País
+
+Qualquer organização ou governo pode adaptar o TerraPilot para sua legislação local em 4 passos:
+
+1. **Criar novo arquivo JSON** (`config/{pais}_rules.json`) com:
+   - Artigos da lei local equivalentes à Lei 12.651
+   - Percentuais de reserva florestal por região ecológica
+   - Regras de zonas de proteção (corpos d'água, nascentes, etc.)
+2. **Traduzir dicionários** (`dictionaries/technical_to_simple.json`) para o idioma local
+3. **Adaptar guias passo-a-passo** para o sistema de registro oficial do país
+4. **Validar com especialista local** em legislação ambiental
+
+### Status Atual
+
+| País | Status | Observação |
+|------|--------|------------|
+| 🇧🇷 Brasil | ✅ Implementado | Lei 12.651/2012 codificada, testes passando |
+| 🇨🇴 Colômbia | 📋 Template básico | JSON criado, pendente validação jurídica local |
+| 🌎 Outros | 🔧 Arquitetura pronta | Qualquer país pode adaptar seguindo os 4 passos acima |
+
+O TerraPilot **não possui parcerias formais** com órgãos governamentais estrangeiros. A replicabilidade é demonstrada por código aberto e arquivos de configuração JSON — não por acordos institucionais.
 
 ### Princípios DPG Aplicados
 
@@ -465,7 +489,8 @@ Documentação técnica complementar em [`docs/architecture.md`](docs/architectu
 - **Python puro** — Regras da Lei 12.651/2012 codificadas (APP Art. 4º, RL Art. 12)
 - **Determinístico** — Mesma entrada = mesma saída (sem alucinação)
 - **Rastreável** — Cada validação aponta o artigo da lei
-- **`config/country_rules.json`** — Regras parametrizáveis por país (BR implementado; CO/PE/ID/MX em template/pesquisa)
+- **`config/country_rules.json`** — Índice de países (BR implementado; CO/PE/ID/MX em template/pesquisa)
+- **`config/colombia_rules.json`** — Template colombiano com regras reais simplificadas (RUP, Decreto 2811/1974)
 
 ### Exportação de Dados
 
@@ -896,7 +921,7 @@ curl http://localhost:8001/health
 - Completar motor de regras (RL Art. 12, áreas consolidadas Art. 61-A, pequenas propriedades Art. 67)
 - Integração com WhatsApp Business API oficial (link direto via api.whatsapp.com já disponível)
 - Piloto com OEMAs parceiras do haCARthon
-- Codificar regras internacionais (CO, PE, ID, MX) a partir de `config/country_rules.json`
+- Codificar regras internacionais (PE, ID, MX) a partir de `config/country_rules.json`; Colômbia já tem template em `config/colombia_rules.json`
 - Suporte a áudio gravado por região (além de TTS offline)
 - Submissão ao [DPG Indicator Framework da UNDP](https://digitalpublicgoods.net/) para certificação oficial como Bem Público Digital
 

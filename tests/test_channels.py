@@ -9,6 +9,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from channels.message_templates import render_template  # noqa: E402
 from channels.sms_gateway import send_sms  # noqa: E402
 from channels.whatsapp_bot import (  # noqa: E402
+    generate_whatsapp_link,
     handle_whatsapp_webhook,
     send_whatsapp_message,
 )
@@ -26,7 +27,13 @@ def test_render_notification_template():
     assert "Responda 1" in text
 
 
-def test_send_whatsapp_demo_mode():
+def test_generate_whatsapp_link():
+    link = generate_whatsapp_link("5575999999999", "Olá!")
+    assert link.startswith("https://api.whatsapp.com/send?")
+    assert "5575999999999" in link
+
+
+def test_send_whatsapp_generates_link():
     result = send_whatsapp_message(
         "+5511999999999",
         {
@@ -35,8 +42,10 @@ def test_send_whatsapp_demo_mode():
         },
     )
 
-    assert result["status"] == "demo"
-    assert result["delivery_status"] == "sent"
+    assert result["status"] == "link_generated"
+    assert result["method"] == "whatsapp_web_api"
+    assert result["requires_credit_card"] is False
+    assert "api.whatsapp.com" in result["link"]
 
 
 def test_send_sms_shortens_and_adds_link():
@@ -54,35 +63,33 @@ def test_whatsapp_webhook_response_1_sends_guide():
     result = handle_whatsapp_webhook(
         {
             "from": "+5511777777777",
-            "message": {"text": "1"},
-            "issue_code": "RL_PERIMETER_DIVERGENCE",
+            "message": "1",
         }
     )
 
     assert result["action"] == "send_guide"
-    assert result["result"]["status"] in ("demo", "sent")
+    assert "passo a passo" in result["message"].lower()
 
 
 def test_whatsapp_webhook_response_2_schedules_call():
     result = handle_whatsapp_webhook(
         {
             "from": "+5511777777777",
-            "message": {"text": "2"},
+            "message": "2",
         }
     )
 
     assert result["action"] == "schedule_call"
-    assert result["result"]["status"] == "scheduled"
-    assert "Luana" in result["result"]["analyst"]
+    assert "Luana" in result["message"]
 
 
 def test_whatsapp_webhook_thumbs_up_marks_understood():
     result = handle_whatsapp_webhook(
         {
             "from": "+5511777777777",
-            "message": {"text": "👍"},
+            "message": "👍",
         }
     )
 
     assert result["action"] == "mark_understood"
-    assert result["result"]["status"] == "understood"
+    assert "entendeu" in result["message"].lower()
