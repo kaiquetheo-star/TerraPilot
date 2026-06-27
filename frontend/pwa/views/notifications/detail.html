@@ -1,0 +1,24 @@
+<section>
+  <h2 class="view-title" data-page-title>Traduzir notificação</h2>
+  <p class="view-subtitle">Cole o texto que chegou do SICAR ou do órgão ambiental</p>
+
+  <div class="card">
+    <div class="form-group">
+      <label class="form-label" for="notification-text">Texto da notificação</label>
+      <textarea id="notification-text" class="form-control" rows="5" placeholder="Ex: Inconsistência no perímetro da RL - divergência de 2,3ha" aria-describedby="notif-hint"></textarea>
+      <p id="notif-hint" class="text-muted mt-2">Cole exatamente como aparece no sistema</p>
+    </div>
+    <button type="button" id="btn-translate" class="btn btn--primary">Traduzir para português simples</button>
+  </div>
+
+  <div class="card mt-2">
+    <div class="form-group">
+      <label class="form-label" for="producer-phone">WhatsApp do produtor</label>
+      <input type="tel" id="producer-phone" class="form-control" placeholder="5575999999999" inputmode="numeric">
+      <p class="text-muted mt-2">DDI + DDD + número (sem espaços)</p>
+    </div>
+    <button type="button" id="send-whatsapp-btn" class="btn btn--secondary">Enviar via WhatsApp</button>
+  </div>
+
+  <div id="translation-result" class="hidden"></div>
+</section>

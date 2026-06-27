@@ -1,0 +1,99 @@
+{
+  "glossary": {
+    "RL": "Reserva Legal",
+    "APP": "área de proteção perto de rios e nascentes",
+    "OEMA": "o órgão ambiental do seu estado",
+    "SICAR": "o sistema de cadastro ambiental",
+    "CAR": "seu cadastro ambiental rural",
+    "perímetro": "contorno da área",
+    "perimetro": "contorno da área",
+    "inconsistência": "algo que precisa ser ajustado",
+    "inconsistencia": "algo que precisa ser ajustado",
+    "divergência": "diferença",
+    "divergencia": "diferença",
+    "sobreposição": "área marcada em cima de outra",
+    "sobreposicao": "área marcada em cima de outra",
+    "geometria inválida": "desenho da área no mapa",
+    "geometria invalida": "desenho da área no mapa"
+  },
+  "patterns": [
+    {
+      "id": "rl_perimeter_divergence",
+      "issue_code": "RL_PERIMETER_DIVERGENCE",
+      "regex": "(?i)inconsist[eê]ncia\\s+no\\s+per[ií]metro\\s+da\\s+RL[^\\d]*diverg[eê]ncia\\s+de\\s+([\\d]+(?:[,.][\\d]+)?)\\s*ha",
+      "template": "A área de Reserva Legal que você marcou está {area_ha} hectares menor que o necessário. Vamos corrigir isso juntos em {steps} passos.",
+      "extract": {
+        "area_ha": {
+          "group": 1,
+          "format": "hectares_round"
+        }
+      },
+      "defaults": {
+        "steps": 3
+      }
+    },
+    {
+      "id": "rl_perimeter_divergence_larger",
+      "issue_code": "RL_PERIMETER_DIVERGENCE",
+      "regex": "(?i)RL[^\\d]*(?:maior|excede|superior)[^\\d]*([\\d]+(?:[,.][\\d]+)?)\\s*ha",
+      "template": "A área de Reserva Legal que você marcou está {area_ha} hectares maior que o necessário. Vamos ajustar isso juntos em {steps} passos.",
+      "extract": {
+        "area_ha": {
+          "group": 1,
+          "format": "hectares_round"
+        }
+      },
+      "defaults": {
+        "steps": 3
+      }
+    },
+    {
+      "id": "app_river_width",
+      "issue_code": "APP_RIVER_WIDTH",
+      "regex": "(?i)APP.*(?:rio|curso d['']?água|cursos d['']?água).*(?:insuficiente|irregular|inconsist)",
+      "template": "A faixa de proteção perto do rio na sua propriedade precisa ser corrigida. Vamos fazer isso juntos em {steps} passos — é mais simples do que parece.",
+      "defaults": {
+        "steps": 4
+      }
+    },
+    {
+      "id": "app_overlap",
+      "issue_code": "APP_OVERLAP",
+      "regex": "(?i)(?:sobreposi[cç][aã]o|conflito).*(?:APP|área de preservação)",
+      "template": "Parte da sua plantação ou construção está dentro da área que deveria ficar livre perto de rio ou nascente. Vamos corrigir o desenho no mapa em {steps} passos.",
+      "defaults": {
+        "steps": 4
+      }
+    },
+    {
+      "id": "missing_rl",
+      "issue_code": "RL_MISSING",
+      "regex": "(?i)(?:aus[eê]ncia|falta|n[aã]o informad[ao]).*Reserva Legal",
+      "template": "Falta marcar a Reserva Legal da sua propriedade — é a parte da terra que a lei pede para manter com mata ou vegetação. Vamos fazer isso juntos em {steps} passos.",
+      "defaults": {
+        "steps": 5
+      }
+    },
+    {
+      "id": "invalid_geometry",
+      "issue_code": "GEOMETRY_INVALID",
+      "regex": "(?i)geometria\\s+inv[aá]lida|auto-interse[cç][aã]o|pol[ií]gono\\s+inv[aá]lido",
+      "template": "O desenho de uma área no seu mapa está cruzando com ele mesmo, como se a linha se enroscasse. Vamos arrumar isso juntos em {steps} passos.",
+      "defaults": {
+        "steps": 3
+      }
+    },
+    {
+      "id": "area_outside_property",
+      "issue_code": "AREA_OUTSIDE_BOUNDARY",
+      "regex": "(?i)(?:fora|excede).*(?:limite|per[ií]metro|im[oó]vel)",
+      "template": "Uma área que você marcou passa da divisa da sua propriedade. Vamos ajustar o contorno no mapa em {steps} passos.",
+      "defaults": {
+        "steps": 3
+      }
+    }
+  ],
+  "fallback": {
+    "template": "Recebemos um aviso do cadastro ambiental sobre a sua propriedade. Não se preocupe — isso é comum e dá para resolver. Vamos te ajudar passo a passo."
+  }
+}

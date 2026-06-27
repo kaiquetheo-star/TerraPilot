@@ -1,0 +1,57 @@
+/* Acessibilidade — contraste 4.5:1+, fonte grande, alto contraste */
+
+html.font-large { font-size: 125%; }
+html.font-xlarge { font-size: 150%; }
+
+html.high-contrast {
+  --color-bg: #000;
+  --color-surface: #000;
+  --color-text: #fff;
+  --color-text-muted: #e5e5e5;
+  --color-primary: #ffff00;
+  --color-primary-light: #ffff00;
+  --color-accent: #00ff00;
+  --color-border: #fff;
+}
+
+html.high-contrast .btn--primary {
+  background: #ffff00;
+  color: #000;
+}
+
+html.high-contrast .card {
+  border-width: 2px;
+  border-color: #fff;
+}
+
+html.reduce-motion * {
+  animation: none !important;
+  transition: none !important;
+}
+
+.skip-link {
+  position: absolute; left: -9999px; top: 0;
+  background: #000; color: #fff;
+  padding: 12px 16px; z-index: 9999;
+}
+.skip-link:focus { left: 0; }
+
+.a11y-toolbar {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 16px;
+}
+.a11y-toolbar .btn {
+  width: auto; flex: 1;
+  min-width: 120px;
+  font-size: 0.9rem;
+  min-height: var(--tap-min);
+}
+
+:focus-visible {
+  outline: 3px solid #1d4ed8;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}

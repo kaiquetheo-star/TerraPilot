@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TerraPilot — Assistente CAR</title>
+  <meta name="description" content="Assistente offline para declarar e retificar o CAR — haCARthon 2026">
+  <meta name="theme-color" content="#2d5f3f">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/accessibility.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Pular para o conteúdo</a>
+
+  <div class="app-shell">
+    <div id="connection-status" class="status-badge offline" role="status" aria-live="polite">
+      🟡 Sem internet — tudo salvo no seu celular. Envia assim que conectar.
+    </div>
+
+    <header class="app-header">
+      <div class="app-header__logo" aria-hidden="true">🌱</div>
+      <h1>TerraPilot</h1>
+      <p>Assistente de regularização do CAR</p>
+    </header>
+
+    <div class="a11y-toolbar" style="padding: 0 16px;">
+      <button type="button" id="btn-font-size" class="btn btn--ghost" aria-label="Aumentar fonte">A+ Fonte</button>
+      <button type="button" id="btn-contrast" class="btn btn--ghost" aria-label="Alto contraste">Contraste</button>
+    </div>
+
+    <main id="main-content" tabindex="-1"></main>
+
+    <nav class="bottom-nav" aria-label="Navegação principal">
+      <a href="#/home" data-route="home"><span class="bottom-nav__icon" aria-hidden="true">🏠</span>Início</a>
+      <a href="#/declare/prefill" data-route="declare/prefill"><span class="bottom-nav__icon" aria-hidden="true">📋</span>Declarar</a>
+      <a href="#/notifications/list" data-route="notifications/list"><span class="bottom-nav__icon" aria-hidden="true">📬</span>Avisos</a>
+      <a href="#/progress/dashboard" data-route="progress/dashboard"><span class="bottom-nav__icon" aria-hidden="true">📊</span>Progresso</a>
+      <a href="#/help/faq" data-route="help/faq"><span class="bottom-nav__icon" aria-hidden="true">❓</span>Ajuda</a>
+    </nav>
+  </div>
+
+  <div id="toast" class="toast hidden" role="alert"></div>
+
+  <script src="js/offline-manager.js"></script>
+  <script src="js/mock-prefill.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/accessibility.js"></script>
+  <script src="js/router.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

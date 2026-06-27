@@ -1,0 +1,30 @@
+{
+  "union": {
+    "leader_type": "union",
+    "title": "Reunião do sindicato — regularização do CAR",
+    "opening": "Colegas produtores, o CAR é o cadastro ambiental da nossa terra.",
+    "talking_points": ["Produtores da região regularizaram este mês", "TerraPilot traduz notificações"],
+    "closing": "Vamos juntos — ninguém fica para trás."
+  },
+  "cooperative": {
+    "leader_type": "cooperative",
+    "title": "Assembleia da cooperativa — CAR e crédito rural",
+    "opening": "Membros, o banco pede CAR em dia para liberar financiamento.",
+    "talking_points": ["Regularizados têm prioridade no crédito"],
+    "closing": "Regularizar é investir no futuro da cooperativa."
+  },
+  "agronomist": {
+    "leader_type": "agronomist",
+    "title": "Orientação técnica — retificação do CAR",
+    "opening": "Produtor, vou explicar o que precisa ser feito no SICAR.",
+    "talking_points": ["TerraPilot valida a regra com artigo da lei"],
+    "closing": "Qualquer dúvida, me chame no WhatsApp."
+  },
+  "bank_manager": {
+    "leader_type": "bank_manager",
+    "title": "Conversa sobre crédito rural — CAR em dia",
+    "opening": "Para liberar o financiamento, o CAR precisa estar regularizado.",
+    "talking_points": ["CAR aprovado destrava crédito rural"],
+    "closing": "Regularize e voltamos a conversar sobre o financiamento."
+  }
+}

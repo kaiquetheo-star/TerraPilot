@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visão Unificada — TerraPilot Analista</title>
+  <meta name="theme-color" content="#2D5F3F">
+  <link rel="stylesheet" href="css/analyst.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <a href="#main" class="skip-link">Pular para o conteúdo</a>
+  <button type="button" id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Abrir menu"></button>
+
+  <div class="app-layout">
+    <aside id="sidebar" class="sidebar" aria-label="Barra lateral"></aside>
+    <div class="main-wrapper">
+      <main id="main" class="main-content" tabindex="-1">
+        <header class="page-header">
+          <div>
+            <h1>Visão unificada</h1>
+            <p class="page-header__meta">Timeline completa do caso em um só lugar</p>
+          </div>
+        </header>
+
+        <div class="navigation-bar">
+          <a href="index.html" class="btn-back">← Voltar para Dashboard</a>
+        </div>
+
+        <div id="case-list">
+          <div class="panel" style="margin-bottom:24px;">
+            <form id="unified-search-form" class="filter-bar" role="search" aria-label="Buscar caso">
+              <div class="form-group" style="flex:1;min-width:280px;">
+                <label for="search-query">Buscar por case_id, CPF ou nome do produtor</label>
+                <input type="search" id="search-query" name="q" placeholder="Ex: 123, Seu Raimundo ou CPF">
+              </div>
+              <button type="submit" class="btn btn--primary">Buscar</button>
+            </form>
+          </div>
+
+          <div class="panel table-wrap">
+            <table class="data-table" aria-label="Lista de casos">
+              <thead>
+                <tr>
+                  <th scope="col">Produtor</th>
+                  <th scope="col">Município</th>
+                  <th scope="col">Erro</th>
+                  <th scope="col">Dias s/ resposta</th>
+                  <th scope="col">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="case-list-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="case-details" hidden>
+          <button type="button" class="btn-close-details" id="btn-close-details">← Voltar para lista</button>
+
+          <div id="unified-loading" class="loading" hidden><div class="loading__spinner"></div> Construindo visão unificada...</div>
+
+          <div class="unified-layout">
+            <section class="panel" aria-labelledby="timeline-title">
+              <h2 class="panel__title" id="timeline-title">Timeline do caso</h2>
+              <div id="timeline"></div>
+            </section>
+            <aside id="case-sidebar" aria-label="Detalhes do caso"></aside>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/mock-data.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/unified.js"></script>
+</body>
+</html>

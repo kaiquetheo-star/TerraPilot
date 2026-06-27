@@ -1,0 +1,14 @@
+{
+  "property_id": "produtor_local",
+  "producer_name": "Produtor",
+  "municipality": "sua região",
+  "watershed_contribution": "Você ajuda a preservar 12ha da bacia hidrográfica local",
+  "municipal_goal_progress": "Seu município está em 67% da meta de regularização",
+  "carbon_sequestered": "~480 toneladas de CO₂/ano",
+  "narrative": "Sua regularização ajuda toda a comunidade a acessar crédito verde",
+  "collective_benefits": [
+    "Proteção de mananciais",
+    "Crédito rural coletivo para cooperativas",
+    "Redução de pressão fiscalizatória"
+  ]
+}

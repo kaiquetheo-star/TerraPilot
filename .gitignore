@@ -1,0 +1,71 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+
+# Ambiente virtual
+.venv/
+venv/
+env/
+ENV/
+.venv_backup/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.backup
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs e temp
+*.log
+/tmp/
+logs/
+
+# Vídeos gerados (são grandes, não devem ir pro GitHub)
+videos/*.mp4
+videos/*.webm
+
+# Cache do Playwright
+playwright-report/
+
+# Requirements lock (opcional)
+requirements.lock.txt
+
+# Arquivos de auditoria temporários
+_audit_report.md
+security-reports/
+
+# Dados locais (SQLite)
+data/**/*.db
+data/**/*.sqlite
+data/*.db
+data/*.sqlite
+
+# Legado Alibaba — não publicar
+_archive/
+
+# Cache de testes
+.pytest_cache/
+
+# Mantém os dados de exemplo
+!data/.gitkeep
+!data/*.json
+!data/*.geojson

@@ -1,0 +1,158 @@
+{
+  "APP_RIVER_WIDTH": {
+    "title": "Corrigir a faixa de proteção do rio",
+    "benefit": "Com isso resolvido, você protege a água da propriedade e evita multa no CAR.",
+    "steps": [
+      {
+        "instruction": "Abra o SICAR Offline no seu computador ou tablet.",
+        "alternative_explanation": "Procure o ícone verde escrito SICAR na área de trabalho ou no menu Iniciar. Se não achar, peça ajuda a um vizinho ou ao técnico da cooperativa.",
+        "illustration": "assets/guides/sicar-open.svg"
+      },
+      {
+        "instruction": "No mapa, clique na área do rio que precisa de correção.",
+        "alternative_explanation": "Use o zoom (+) para chegar perto do rio. O rio aparece como uma linha azul. Toque ou clique em cima dela.",
+        "illustration": "assets/guides/select-river.svg"
+      },
+      {
+        "instruction": "Clique no botão Desenhar e arraste o ponto vermelho {min_width_m} metros para longe do rio.",
+        "alternative_explanation": "O ponto vermelho é a borda da faixa de proteção. Puxe ele para fora, na direção da terra, até completar {min_width_m} metros a partir da beira da água. Se tiver dúvida, meça com passos largos ou peça ao técnico.",
+        "illustration": "assets/guides/drag-app-margin.svg"
+      },
+      {
+        "instruction": "Clique em Salvar e depois em Sincronizar quando tiver internet.",
+        "alternative_explanation": "Salvar guarda a correção no aparelho. Sincronizar envia para o cadastro oficial — só faça isso quando a internet voltar.",
+        "illustration": "assets/guides/save-sync.svg"
+      }
+    ]
+  },
+  "RL_PERIMETER_DIVERGENCE": {
+    "title": "Ajustar a Reserva Legal no mapa",
+    "benefit": "Com a Reserva Legal certa, você destrava crédito rural em cerca de 30 dias após aprovação.",
+    "steps": [
+      {
+        "instruction": "Abra o SICAR Offline e localize a camada Reserva Legal (RL).",
+        "alternative_explanation": "No menu lateral, procure RL ou Reserva Legal. É a área que a lei pede para manter com mata ou vegetação nativa.",
+        "illustration": "assets/guides/sicar-open.svg"
+      },
+      {
+        "instruction": "Clique em Editar, depois em Desenhar, e amplie ou reduza a área verde até cobrir os {area_ha} hectares corretos.",
+        "alternative_explanation": "Pense na Reserva Legal como um pedaço da fazenda que fica com mato. Se faltam hectares, puxe a borda para fora. Se passou do tamanho, puxe para dentro. O sistema mostra a área em hectares na tela.",
+        "illustration": "assets/guides/rl-adjust.svg"
+      },
+      {
+        "instruction": "Clique em Salvar e sincronize quando tiver internet.",
+        "alternative_explanation": "Antes de sincronizar, olhe o número de hectares na tela. Se ainda não bater, você pode editar de novo sem problema.",
+        "illustration": "assets/guides/save-sync.svg"
+      }
+    ]
+  },
+  "APP_OVERLAP": {
+    "title": "Tirar plantação ou construção de dentro da área protegida",
+    "benefit": "Corrigir isso evita embargo e mostra que você está cuidando da água e do solo.",
+    "steps": [
+      {
+        "instruction": "Abra o SICAR Offline e localize onde a APP cruza com outra área.",
+        "alternative_explanation": "A APP é a faixa perto de rio ou nascente que deve ficar livre. O sistema mostra em vermelho ou com aviso onde há conflito.",
+        "illustration": "assets/guides/sicar-open.svg"
+      },
+      {
+        "instruction": "Clique em Editar na área de plantação ou uso que está dentro da APP.",
+        "alternative_explanation": "Você vai ajustar o desenho da lavoura ou pasto — não precisa derrubar tudo agora no campo, só corrigir o mapa conforme a realidade ou o que será adequado.",
+        "illustration": "assets/guides/draw-button.svg"
+      },
+      {
+        "instruction": "Puxe o contorno para fora da faixa de proteção, deixando a APP livre.",
+        "alternative_explanation": "Imagine uma margem ao longo do rio sem plantio. O desenho da lavoura não pode invadir essa margem no mapa.",
+        "illustration": "assets/guides/drag-app-margin.svg"
+      },
+      {
+        "instruction": "Salve e sincronize quando tiver internet.",
+        "alternative_explanation": "Depois de salvar, peça ao técnico para revisar se ficou certo antes de enviar ao órgão ambiental.",
+        "illustration": "assets/guides/save-sync.svg"
+      }
+    ]
+  },
+  "RL_MISSING": {
+    "title": "Marcar a Reserva Legal pela primeira vez",
+    "benefit": "Sem a Reserva Legal no cadastro, o CAR não fica completo e o crédito rural fica bloqueado.",
+    "steps": [
+      {
+        "instruction": "Abra o SICAR Offline e selecione sua propriedade no mapa.",
+        "alternative_explanation": "Sua propriedade aparece como um polígono grande. Clique dentro dele para trabalhar.",
+        "illustration": "assets/guides/sicar-open.svg"
+      },
+      {
+        "instruction": "Clique em Nova área e escolha Reserva Legal (RL).",
+        "alternative_explanation": "Nova área abre o modo de desenho. RL é a parte da terra com vegetação nativa ou que será recuperada.",
+        "illustration": "assets/guides/draw-button.svg"
+      },
+      {
+        "instruction": "Desenhe o contorno da mata ou área de vegetação que será a Reserva Legal.",
+        "alternative_explanation": "Clique nos cantos da mata no mapa para formar um desenho fechado. Se não tiver mata ainda, marque onde vai recuperar — um técnico pode ajudar a calcular o tamanho certo.",
+        "illustration": "assets/guides/rl-adjust.svg"
+      },
+      {
+        "instruction": "Confira se o tamanho em hectares bate com o que a lei pede para o seu imóvel.",
+        "alternative_explanation": "O percentual depende do tamanho da fazenda e da região. O TerraPilot pode sugerir — você sempre confirma antes de salvar.",
+        "illustration": "assets/guides/rl-adjust.svg"
+      },
+      {
+        "instruction": "Clique em Salvar e sincronize quando tiver internet.",
+        "alternative_explanation": "Guarde o arquivo e envie quando a internet voltar. Você pode continuar editando offline antes disso.",
+        "illustration": "assets/guides/save-sync.svg"
+      }
+    ]
+  },
+  "GEOMETRY_INVALID": {
+    "title": "Arrumar o desenho que está cruzado no mapa",
+    "benefit": "Um desenho correto acelera a análise do seu cadastro e evita devolução.",
+    "steps": [
+      {
+        "instruction": "Abra o SICAR Offline e localize a área com aviso de geometria inválida.",
+        "alternative_explanation": "O sistema marca em vermelho ou com um X onde a linha do desenho se cruza, como um laço.",
+        "illustration": "assets/guides/sicar-open.svg"
+      },
+      {
+        "instruction": "Clique em Editar e selecione o ponto onde a linha se cruza.",
+        "alternative_explanation": "Zoom bem perto até ver onde a linha faz curva estranha ou passa por cima de si mesma.",
+        "illustration": "assets/guides/draw-button.svg"
+      },
+      {
+        "instruction": "Arraste o ponto para desfazer o cruzamento e deixar o contorno simples.",
+        "alternative_explanation": "Pense em desembaraçar um barbante: puxe o ponto para fora até a linha ficar limpa, sem voltas.",
+        "illustration": "assets/guides/geometry-fix.svg"
+      },
+      {
+        "instruction": "Salve e verifique se o aviso sumiu antes de sincronizar.",
+        "alternative_explanation": "Se o aviso continuar, tente outro ponto ou peça ajuda ao técnico — é comum e tem solução.",
+        "illustration": "assets/guides/save-sync.svg"
+      }
+    ]
+  },
+  "AREA_OUTSIDE_BOUNDARY": {
+    "title": "Puxar uma área de volta para dentro da propriedade",
+    "benefit": "Manter tudo dentro da divisa evita conflito com vizinho e reprovação do CAR.",
+    "steps": [
+      {
+        "instruction": "Abra o SICAR Offline e localize a área que passa da divisa.",
+        "alternative_explanation": "Compare com o mapa da propriedade ou com o GPS do campo. A parte que sai do limite aparece fora do contorno principal.",
+        "illustration": "assets/guides/sicar-open.svg"
+      },
+      {
+        "instruction": "Clique em Editar no contorno da área que está fora.",
+        "alternative_explanation": "Edite só a área problemática — lavoura, pasto ou RL — sem mexer no limite da propriedade inteira se não precisar.",
+        "illustration": "assets/guides/draw-button.svg"
+      },
+      {
+        "instruction": "Arraste os pontos de volta para dentro do limite da sua terra.",
+        "alternative_explanation": "Use cerca, estrada ou mata como referência. O desenho deve ficar todo dentro da linha da propriedade.",
+        "illustration": "assets/guides/boundary-fix.svg"
+      },
+      {
+        "instruction": "Salve e sincronize quando tiver internet.",
+        "alternative_explanation": "Se a divisa for discutida com vizinho, converse antes e, se precisar, chame um agrimensor.",
+        "illustration": "assets/guides/save-sync.svg"
+      }
+    ]
+  }
+}

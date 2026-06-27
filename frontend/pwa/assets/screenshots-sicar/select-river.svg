@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" role="img" aria-label="Selecionar rio no mapa">
+  <rect width="320" height="200" fill="#ecfeff"/>
+  <path d="M20 120 C80 80, 120 160, 180 100 S280 60, 300 90" stroke="#0284c7" stroke-width="8" fill="none"/>
+  <circle cx="180" cy="100" r="14" fill="#ef4444"/>
+  <text x="160" y="40" text-anchor="middle" fill="#0f172a" font-size="16" font-family="sans-serif">Clique no rio</text>
+</svg>

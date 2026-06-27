@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>TerraPilot Screenshots</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+      padding: 24px;
+    }
+    .phone {
+      width: 320px;
+      height: 640px;
+      background: #f0fdf4;
+      border-radius: 28px;
+      border: 3px solid #166534;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    }
+    .status { background: #166534; color: #fff; padding: 10px 16px; font-size: 13px; font-weight: 600; text-align: center; }
+    .header { background: #15803d; color: #fff; padding: 16px; text-align: center; }
+    .header h1 { font-size: 20px; }
+    .header p { font-size: 12px; opacity: 0.9; margin-top: 4px; }
+    .content { padding: 16px; flex: 1; overflow: hidden; }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+      border-left: 4px solid #16a34a;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .card.warn { border-left-color: #ea580c; }
+    .card h3 { font-size: 14px; color: #14532d; margin-bottom: 6px; }
+    .card p { font-size: 13px; color: #374151; line-height: 1.45; }
+    .progress-bar {
+      background: #dcfce7;
+      border-radius: 999px;
+      height: 24px;
+      margin: 12px 0;
+      overflow: hidden;
+    }
+    .progress-fill {
+      background: #16a34a;
+      height: 100%;
+      width: 43%;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: #16a34a;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: center;
+      margin-top: 8px;
+    }
+    .btn.secondary { background: #fff; color: #166534; border: 2px solid #16a34a; }
+    .step-num {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      background: #16a34a;
+      color: #fff;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 28px;
+      font-weight: 700;
+      font-size: 14px;
+      margin-right: 8px;
+    }
+    .before { background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 10px; font-size: 12px; color: #991b1b; margin-bottom: 8px; }
+    .after { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 10px; font-size: 12px; color: #14532d; }
+    .legal { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px; font-size: 12px; color: #1e40af; margin-top: 8px; }
+    .illus { background: #e5e7eb; border-radius: 8px; height: 80px; margin: 10px 0; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #6b7280; }
+    .benefit { background: #fef9c3; border-radius: 8px; padding: 10px; font-size: 12px; color: #854d0e; margin-top: 10px; }
+    .screen { margin-bottom: 40px; }
+    .label { font-size: 12px; color: #666; margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+
+<div class="screen" id="home">
+  <div class="phone">
+    <div class="status">● Offline — dados salvos no aparelho</div>
+    <div class="header">
+      <h1>🌱 TerraPilot</h1>
+      <p>Olá, Seu Raimundo</p>
+    </div>
+    <div class="content">
+      <div class="progress-bar"><div class="progress-fill">3 de 7</div></div>
+      <p style="font-size:13px;color:#166534;font-weight:600;margin-bottom:12px;">3 de 7 problemas resolvidos — falta pouco!</p>
+      <div class="card warn">
+        <h3>⚠️ Reserva Legal</h3>
+        <p>Área 2 ha menor que o necessário</p>
+      </div>
+      <div class="card warn">
+        <h3>⚠️ APP do rio</h3>
+        <p>Faixa de proteção insuficiente</p>
+      </div>
+      <div class="card">
+        <h3>✅ Geometria</h3>
+        <p>Corrigido — aguardando envio</p>
+      </div>
+      <div class="btn">Ver próxima retificação</div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="notification-translated">
+  <div class="phone">
+    <div class="status">● Offline</div>
+    <div class="header"><h1>Notificação</h1><p>Traduzida para você</p></div>
+    <div class="content">
+      <p style="font-size:12px;color:#6b7280;margin-bottom:8px;">ANTES (SICAR)</p>
+      <div class="before">Inconsistência no perímetro da RL - divergência de 2,3ha</div>
+      <p style="font-size:12px;color:#6b7280;margin:12px 0 8px;">DEPOIS (TerraPilot)</p>
+      <div class="after">A área de Reserva Legal que você marcou está 2 hectares menor que o necessário. Vamos corrigir isso juntos em 3 passos.</div>
+      <div class="btn">Começar correção</div>
+      <div class="btn secondary">🔊 Ouvir explicação</div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="step-by-step">
+  <div class="phone">
+    <div class="status">● Offline</div>
+    <div class="header"><h1>Guia passo-a-passo</h1><p>Reserva Legal — passo 2 de 3</p></div>
+    <div class="content">
+      <p style="margin-bottom:10px;"><span class="step-num">2</span><strong style="font-size:14px;">Editar e ajustar área</strong></p>
+      <div class="illus">📱 Ilustração SICAR Offline</div>
+      <p style="font-size:13px;line-height:1.5;color:#374151;">Clique em Editar, depois em Desenhar, e amplie a área verde até cobrir os 2 hectares corretos.</p>
+      <div class="btn">Entendi, próximo passo</div>
+      <div class="btn secondary">Não entendi</div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="legal-explanation">
+  <div class="phone">
+    <div class="status">● Offline</div>
+    <div class="header"><h1>Por que isso?</h1><p>Explicação da lei</p></div>
+    <div class="content">
+      <div class="card">
+        <h3>APP do rio — 50 metros</h3>
+        <p>Seu rio tem cerca de 25 metros de largura. Pela lei, você precisa deixar pelo menos 50 metros livres de cada lado.</p>
+      </div>
+      <div class="legal">
+        <strong>📜 Art. 4º, I, 'b' da Lei 12.651/2012</strong><br>
+        Para rios de 10 a 50 metros de largura, a faixa marginal mínima é de 50 metros.
+      </div>
+      <div class="btn">Ver como corrigir</div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="progress">
+  <div class="phone">
+    <div class="status">● Offline</div>
+    <div class="header"><h1>Seu progresso</h1><p>Continue assim!</p></div>
+    <div class="content">
+      <div class="progress-bar"><div class="progress-fill">3 de 7</div></div>
+      <p style="font-size:15px;font-weight:700;color:#166534;margin-bottom:12px;">3 de 7 problemas resolvidos — falta pouco!</p>
+      <div class="card">
+        <h3>✅ Reserva Legal corrigida</h3>
+        <p>Enviado ao SICAR — aguardando análise</p>
+      </div>
+      <div class="benefit">💰 Com isso resolvido, seu crédito rural pode liberar em ~30 dias após aprovação.</div>
+      <div class="btn">Próximo problema</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

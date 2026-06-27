@@ -1,0 +1,18 @@
+<section>
+  <h2 class="view-title" data-page-title>Pré-preenchimento</h2>
+  <p class="view-subtitle">Sugestões com bases abertas — você confirma no SICAR</p>
+
+  <div class="card">
+    <div class="form-group">
+      <label class="form-label" for="prefill-municipality">Município</label>
+      <input type="text" id="prefill-municipality" class="form-control" placeholder="Ex: Lucas do Rio Verde" autocomplete="address-level2">
+    </div>
+    <button type="button" id="btn-gps" class="btn btn--secondary" aria-label="Usar GPS do aparelho">📍 Usar GPS</button>
+    <p id="gps-coords" class="text-muted mt-2 hidden"></p>
+    <button type="button" id="btn-prefill" class="btn btn--primary">Buscar sugestões</button>
+  </div>
+
+  <div id="prefill-results"></div>
+
+  <p class="text-muted">Dados de MapBiomas, IBGE, SNIRH — bases públicas. O TerraPilot não substitui o SICAR.</p>
+</section>

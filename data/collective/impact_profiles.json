@@ -1,0 +1,23 @@
+{
+  "source": "Painel SFB + estimativas demonstrativas (sem PII)",
+  "properties": {
+    "raimundo_itaberaba": {
+      "producer_name": "Seu Raimundo",
+      "municipality": "Itaberaba",
+      "municipality_code": "2914703",
+      "watershed_name": "Bacia do Rio Paraguaçu",
+      "watershed_ha": 12,
+      "municipal_progress_pct": 67,
+      "carbon_tons_per_year": 480
+    },
+    "produtor_local": {
+      "producer_name": "Produtor",
+      "municipality": "Lucas do Rio Verde",
+      "municipality_code": "5105903",
+      "watershed_name": "Bacia do Alto Paraguai",
+      "watershed_ha": 18,
+      "municipal_progress_pct": 52,
+      "carbon_tons_per_year": 620
+    }
+  }
+}

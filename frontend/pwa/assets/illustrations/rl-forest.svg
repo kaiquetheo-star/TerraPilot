@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" role="img" aria-label="Propriedade com Reserva Legal">
+  <rect width="400" height="200" fill="#fef9c3"/>
+  <rect x="40" y="40" width="320" height="120" fill="#d4a574" stroke="#92400e" stroke-width="2"/>
+  <rect x="60" y="60" width="140" height="80" fill="#166534" opacity="0.85"/>
+  <text x="130" y="105" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">Reserva Legal</text>
+  <text x="280" y="105" text-anchor="middle" fill="#713f12" font-size="12">Área produtiva</text>
+</svg>

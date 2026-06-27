@@ -1,0 +1,30 @@
+<section>
+  <h2 class="view-title" data-page-title>Rede de confiança</h2>
+  <p class="view-subtitle">Você não está sozinho na regularização</p>
+
+  <div class="card">
+    <div class="form-group">
+      <label class="form-label" for="network-municipality-code">Código IBGE do município</label>
+      <input type="text" id="network-municipality-code" class="form-control" placeholder="Ex: 2914703 (Itaberaba)" inputmode="numeric">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="network-biome">Bioma</label>
+      <input type="text" id="network-biome" class="form-control" placeholder="Ex: Caatinga" value="Caatinga">
+    </div>
+    <button type="button" id="btn-network-load" class="btn btn--primary">Ver progresso da região</button>
+  </div>
+
+  <div id="network-results"></div>
+
+  <div class="card mt-2">
+    <h3>Template para reunião</h3>
+    <p class="text-muted">Para sindicato, cooperativa, técnico ou gerente do banco</p>
+    <div class="chip-row" role="group" aria-label="Tipo de líder">
+      <button type="button" class="chip" data-leader="union">Sindicato</button>
+      <button type="button" class="chip" data-leader="cooperative">Cooperativa</button>
+      <button type="button" class="chip" data-leader="agronomist">Técnico</button>
+      <button type="button" class="chip" data-leader="bank_manager">Banco</button>
+    </div>
+    <div id="leader-template" class="mt-2"></div>
+  </div>
+</section>

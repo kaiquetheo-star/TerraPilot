@@ -1,0 +1,68 @@
+{
+  "status": "implemented",
+  "name": "Brasil",
+  "law": "Lei 12.651/2012",
+  "law_url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12651.htm",
+  "registry_system": "CAR — Cadastro Ambiental Rural",
+  "registry_url": "https://www.car.gov.br",
+  "biomes": {
+    "Amazonia Legal": {
+      "rl_percentage": {
+        "floresta": 80,
+        "cerrado": 35,
+        "campos_gerais": 20
+      }
+    },
+    "Cerrado": {
+      "rl_percentage": {
+        "default": 20
+      }
+    },
+    "Outros": {
+      "rl_percentage": {
+        "default": 20
+      }
+    }
+  },
+  "app_rules": {
+    "river_width_m": [
+      {
+        "min": 0,
+        "max": 10,
+        "app_width_m": 30,
+        "legal_ref": "Art. 4º, I, 'a'"
+      },
+      {
+        "min": 10,
+        "max": 50,
+        "app_width_m": 50,
+        "legal_ref": "Art. 4º, I, 'b'"
+      },
+      {
+        "min": 50,
+        "max": 200,
+        "app_width_m": 100,
+        "legal_ref": "Art. 4º, I, 'c'"
+      },
+      {
+        "min": 200,
+        "max": 600,
+        "app_width_m": 200,
+        "legal_ref": "Art. 4º, I, 'd'"
+      },
+      {
+        "min": 600,
+        "max": null,
+        "app_width_m": 500,
+        "legal_ref": "Art. 4º, I, 'e'"
+      }
+    ]
+  },
+  "open_data_sources": [
+    "IBGE",
+    "MapBiomas",
+    "SNIRH/ANA",
+    "Portal de Consulta Pública do CAR"
+  ],
+  "notes": "Implementação completa no haCARthon 2026. Motor de regras em src/rules/, tradutor e guias operacionais."
+}

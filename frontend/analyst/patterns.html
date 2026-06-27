@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Padrões de Erro — TerraPilot Analista</title>
+  <meta name="theme-color" content="#2D5F3F">
+  <link rel="stylesheet" href="css/analyst.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <a href="#main" class="skip-link">Pular para o conteúdo</a>
+  <button type="button" id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Abrir menu"></button>
+
+  <div class="app-layout">
+    <aside id="sidebar" class="sidebar" aria-label="Barra lateral"></aside>
+    <div class="main-wrapper">
+      <main id="main" class="main-content" tabindex="-1">
+        <header class="page-header">
+          <div>
+            <h1>Padrões de erro</h1>
+            <p class="page-header__meta">Análise agregada para ação preventiva</p>
+          </div>
+        </header>
+
+        <div id="patterns-loading" class="loading"><div class="loading__spinner"></div> Detectando padrões...</div>
+
+        <div class="patterns-grid">
+          <section class="panel" aria-labelledby="top-errors-title">
+            <h2 class="panel__title" id="top-errors-title">Top 5 erros</h2>
+            <div id="top-errors-chart"></div>
+          </section>
+          <section class="panel" aria-labelledby="biome-title">
+            <h2 class="panel__title" id="biome-title">Distribuição por bioma</h2>
+            <div id="biome-chart"></div>
+          </section>
+          <section class="panel" aria-labelledby="heatmap-title">
+            <h2 class="panel__title" id="heatmap-title">Mapa de calor — erros por município</h2>
+            <div id="heatmap"></div>
+          </section>
+          <section class="panel" aria-labelledby="insights-title">
+            <h2 class="panel__title" id="insights-title">Insights automáticos</h2>
+            <div id="insights-list"></div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/mock-data.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/patterns.js"></script>
+</body>
+</html>

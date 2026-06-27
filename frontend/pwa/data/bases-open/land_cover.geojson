@@ -1,0 +1,52 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "source": "MapBiomas — Cobertura e uso do solo (amostra offline para demonstração)",
+    "license": "CC BY-SA 4.0",
+    "year": 2023
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "forest_001",
+        "class": "Floresta",
+        "type": "forest",
+        "label": "Mata nativa sugerida para Reserva Legal"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-55.9170, -13.0535],
+            [-55.9120, -13.0535],
+            [-55.9120, -13.0495],
+            [-55.9170, -13.0495],
+            [-55.9170, -13.0535]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "pasture_001",
+        "class": "Pastagem",
+        "type": "land_cover",
+        "label": "Pastagem mapeada na região"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-55.9160, -13.0510],
+            [-55.9130, -13.0510],
+            [-55.9130, -13.0490],
+            [-55.9160, -13.0490],
+            [-55.9160, -13.0510]
+          ]
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+<section>
+  <h2 class="view-title" data-page-title>Validar localmente</h2>
+  <p class="view-subtitle">Confira as regras antes de enviar ao SICAR oficial</p>
+
+  <div class="card">
+    <div class="form-group">
+      <label class="form-label" for="validate-river">Largura do rio na propriedade (m)</label>
+      <input type="number" id="validate-river" class="form-control" min="1" placeholder="Ex: 25">
+    </div>
+    <button type="button" id="btn-validate-app" class="btn btn--primary">Validar APP</button>
+  </div>
+
+  <div id="validate-result" class="card hidden" role="region" aria-live="polite"></div>
+
+  <div class="card">
+    <p class="text-muted">Esta validação usa regras da Lei 12.651/2012 no seu aparelho. A decisão final é do analista ambiental no sistema oficial.</p>
+    <a href="#/declare/draw-guide" class="btn btn--secondary">Ver guia de desenho</a>
+  </div>
+</section>

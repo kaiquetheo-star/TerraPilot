@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — TerraPilot Analista</title>
+  <meta name="theme-color" content="#2D5F3F">
+  <link rel="stylesheet" href="css/analyst.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <a href="#main" class="skip-link">Pular para o conteúdo</a>
+  <button type="button" id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Abrir menu"></button>
+
+  <div class="app-layout">
+    <aside id="sidebar" class="sidebar" aria-label="Barra lateral"></aside>
+    <div class="main-wrapper">
+      <main id="main" class="main-content" tabindex="-1">
+        <header class="page-header">
+          <div>
+            <h1>Olá, Luana</h1>
+            <p class="page-header__meta" id="header-datetime" aria-live="polite"></p>
+          </div>
+        </header>
+
+        <div id="stats-grid" class="stats-grid" aria-label="Indicadores principais">
+          <div class="loading"><div class="loading__spinner"></div> Carregando métricas...</div>
+        </div>
+
+        <div class="dashboard-grid">
+          <section class="panel chart-panel" aria-labelledby="trend-title">
+            <h2 class="panel__title" id="trend-title">Tendência — casos resolvidos (30 dias)</h2>
+            <div id="trend-chart"></div>
+          </section>
+          <section class="panel" aria-labelledby="actions-title">
+            <h2 class="panel__title" id="actions-title">Próximas ações</h2>
+            <div id="next-actions"></div>
+          </section>
+        </div>
+
+        <section class="panel alerts-list" aria-labelledby="alerts-title">
+          <h2 class="panel__title" id="alerts-title">Alertas — produtores sem resposta (&gt;30 dias)</h2>
+          <div id="alerts-list"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/mock-data.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

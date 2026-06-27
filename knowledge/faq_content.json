@@ -1,0 +1,148 @@
+{
+  "entries": [
+    {
+      "id": "faq_car_oque_e",
+      "question": "O que é o CAR e por que preciso dele?",
+      "answer": "O CAR é o cadastro da sua propriedade rural no meio ambiente. Com ele em dia, você pode vender, financiar e mostrar que cuida da terra. Sem o CAR, o banco e o comprador podem travar negócio.",
+      "priority": 1,
+      "filters": {
+        "biomes": ["*"],
+        "property_sizes": ["*"],
+        "production_types": ["*"]
+      },
+      "audio_script_file": "assets/knowledge/scripts/faq_car_oque_e.txt"
+    },
+    {
+      "id": "faq_rl_oque_e",
+      "question": "O que é Reserva Legal?",
+      "answer": "Reserva Legal é a parte da sua terra que a lei pede para manter com mata ou vegetação nativa. Não é área perdida — é o que garante água, sombra e o cadastro aprovado.",
+      "priority": 2,
+      "filters": {
+        "biomes": ["*"],
+        "property_sizes": ["*"],
+        "production_types": ["*"]
+      },
+      "audio_script_file": "assets/knowledge/scripts/faq_rl_oque_e.txt"
+    },
+    {
+      "id": "faq_app_rio",
+      "question": "Por que preciso deixar espaço livre perto do rio?",
+      "answer": "A faixa perto do rio protege a água que você e sua família usam. A lei chama isso de APP. Se o desenho no mapa estiver errado, o cadastro volta para correção.",
+      "priority": 3,
+      "filters": {
+        "biomes": ["*"],
+        "property_sizes": ["*"],
+        "production_types": ["agriculture", "livestock", "mixed", "extractivism"]
+      },
+      "audio_script_file": "assets/knowledge/scripts/faq_app_rio.txt"
+    },
+    {
+      "id": "faq_rl_amazonia",
+      "question": "Quanto de Reserva Legal preciso na Amazônia?",
+      "answer": "Na Amazônia Legal, a regra geral é manter 80% da propriedade com vegetação nativa. O percentual exato depende do tamanho do imóvel e do que já existia em 2008 — um técnico ou o TerraPilot ajudam a conferir.",
+      "priority": 2,
+      "filters": {
+        "biomes": ["Amazônia Legal"],
+        "property_sizes": ["medium", "large"],
+        "production_types": ["*"]
+      },
+      "audio_script_file": "assets/knowledge/scripts/faq_rl_amazonia.txt"
+    },
+    {
+      "id": "faq_rl_cerrado",
+      "question": "Quanto de Reserva Legal preciso no Cerrado?",
+      "answer": "No Cerrado, a regra geral é 20% de Reserva Legal. Imóveis menores podem ter regras diferentes. O importante é marcar no mapa a mata ou área de recuperação correta.",
+      "priority": 2,
+      "filters": {
+        "biomes": ["Cerrado"],
+        "property_sizes": ["*"],
+        "production_types": ["*"]
+      },
+      "audio_script_file": "assets/knowledge/scripts/faq_rl_cerrado.txt"
+    },
+    {
+      "id": "faq_pequena_propriedade",
+      "question": "Minha propriedade é pequena. Tenho regras mais simples?",
+      "answer": "Propriedades de até 4 módulos fiscais podem ter tratamento diferente pela lei (Art. 67). Mesmo assim, o CAR é importante. O TerraPilot calcula seu módulo fiscal pelo município e explica o que vale para você.",
+      "priority": 1,
+      "filters": {
+        "biomes": ["*"],
+        "property_sizes": ["small"],
+        "production_types": ["*"]
+      },
+      "audio_script_file": "assets/knowledge/scripts/faq_pequena_propriedade.txt"
+    },
+    {
+      "id": "faq_retificacao_medo",
+      "question": "Recebi pedido de retificação. Vou ser multado?",
+      "answer": "Retificação é um pedido de ajuste, não multa automática. Significa que algo no mapa precisa ser corrigido. Quanto antes você corrigir, menor o risco de problema grave.",
+      "priority": 1,
+      "filters": {
+        "biomes": ["*"],
+        "property_sizes": ["*"],
+        "production_types": ["*"]
+      },
+      "audio_script_file": "assets/knowledge/scripts/faq_retificacao_medo.txt"
+    },
+    {
+      "id": "faq_credito_rural",
+      "question": "O CAR libera crédito rural?",
+      "answer": "Sim. Banco e cooperativa costumam pedir CAR regular antes de liberar financiamento. Com as correções feitas e cadastro aprovado, o crédito costuma ser liberado em cerca de 30 dias.",
+      "priority": 4,
+      "filters": {
+        "biomes": ["*"],
+        "property_sizes": ["*"],
+        "production_types": ["agriculture", "livestock", "mixed"]
+      },
+      "audio_script_file": "assets/knowledge/scripts/faq_credito_rural.txt"
+    },
+    {
+      "id": "faq_pasto_cerrado",
+      "question": "Tenho só pasto. Preciso de Reserva Legal igual?",
+      "answer": "Sim, mesmo em pastagem a Reserva Legal vale. No Cerrado são em geral 20%. A vegetação nativa ou a área em recuperação precisa aparecer no mapa do CAR.",
+      "priority": 3,
+      "filters": {
+        "biomes": ["Cerrado", "Pampa"],
+        "property_sizes": ["*"],
+        "production_types": ["livestock", "mixed"]
+      },
+      "audio_script_file": "assets/knowledge/scripts/faq_pasto_cerrado.txt"
+    },
+    {
+      "id": "faq_extrativismo",
+      "question": "Colho castanha e produtos da floresta. O CAR muda alguma coisa?",
+      "answer": "Para quem vive da floresta, o CAR registra a área de uso e a vegetação que precisa ser mantida. Isso ajuda a comprovar posse e acessar programas de apoio sem perder o direito de usar a mata de forma sustentável.",
+      "priority": 3,
+      "filters": {
+        "biomes": ["Amazônia Legal", "Cerrado", "Caatinga"],
+        "property_sizes": ["*"],
+        "production_types": ["extractivism", "mixed"]
+      },
+      "audio_script_file": "assets/knowledge/scripts/faq_extrativismo.txt"
+    },
+    {
+      "id": "faq_offline_sicar",
+      "question": "Não tenho internet no sítio. Consigo fazer o CAR?",
+      "answer": "Sim. O SICAR Offline funciona sem internet. Você desenha e salva no aparelho. O TerraPilot também funciona offline depois da primeira carga. Sincronize quando chegar em casa ou na cidade.",
+      "priority": 2,
+      "filters": {
+        "biomes": ["*"],
+        "property_sizes": ["*"],
+        "production_types": ["*"]
+      },
+      "audio_script_file": "assets/knowledge/scripts/faq_offline_sicar.txt"
+    },
+    {
+      "id": "faq_grande_propriedade",
+      "question": "Minha fazenda é grande. O que devo conferir com mais cuidado?",
+      "answer": "Em propriedades grandes, confira Reserva Legal, APP de todos os rios e se nenhuma área passou da divisa. Erros de hectares somam rápido. Vale revisar um trecho por vez com calma.",
+      "priority": 3,
+      "filters": {
+        "biomes": ["*"],
+        "property_sizes": ["large"],
+        "production_types": ["agriculture", "livestock", "mixed"]
+      },
+      "audio_script_file": "assets/knowledge/scripts/faq_grande_propriedade.txt"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "5105903": {
+    "ibge_code": "5105903",
+    "name": "Lucas do Rio Verde",
+    "state": "MT",
+    "modulo_fiscal_ha": 75,
+    "biome": "Amazônia Legal",
+    "rl_percent_legal": 80,
+    "source": "IBGE — Módulo fiscal municipal (dado aberto)"
+  },
+  "1505031": {
+    "ibge_code": "1505031",
+    "name": "Santarém",
+    "state": "PA",
+    "modulo_fiscal_ha": 75,
+    "biome": "Amazônia Legal",
+    "rl_percent_legal": 80,
+    "source": "IBGE — Módulo fiscal municipal (dado aberto)"
+  },
+  "5211909": {
+    "ibge_code": "5211909",
+    "name": "Jataí",
+    "state": "GO",
+    "modulo_fiscal_ha": 70,
+    "biome": "Cerrado",
+    "rl_percent_legal": 20,
+    "source": "IBGE — Módulo fiscal municipal (dado aberto)"
+  }
+}

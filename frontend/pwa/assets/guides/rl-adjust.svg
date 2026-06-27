@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" role="img" aria-label="Ajustar Reserva Legal">
+  <rect width="320" height="200" fill="#f0fdf4"/>
+  <polygon points="60,150 120,60 220,80 260,140" fill="#22c55e" opacity="0.5" stroke="#15803d" stroke-width="3"/>
+  <circle cx="220" cy="80" r="10" fill="#ef4444"/>
+  <path d="M220 80 L250 50" stroke="#b91c1c" stroke-width="3"/>
+  <text x="160" y="185" text-anchor="middle" fill="#14532d" font-size="14" font-family="sans-serif">Amplie ou reduza a �rea verde</text>
+</svg>

@@ -1,0 +1,17 @@
+{
+  "does": [
+    {"feature": "Traduz as mensagens do órgão ambiental para o português do dia a dia", "legal_basis": "—"},
+    {"feature": "Mostra passo a passo onde clicar no sistema do CAR", "legal_basis": "—"},
+    {"feature": "Explica o que a lei pede, sem palavras difíceis", "legal_basis": "Lei 12.651"},
+    {"feature": "Avisa quando você tem direitos que nem sabia (como área consolidada)", "legal_basis": "Art. 61-A"},
+    {"feature": "Funciona sem internet — tudo salvo no celular", "legal_basis": "—"},
+    {"feature": "Mostra o quanto falta pra regularizar e quais benefícios isso traz", "legal_basis": "—"}
+  ],
+  "does_not": [
+    {"feature": "Aprovar ou reprovar seu CAR", "reason": "Isso é com o analista do governo"},
+    {"feature": "Substituir técnico, engenheiro ou agrônomo", "reason": "Georreferenciamento exige profissional habilitado"},
+    {"feature": "Garantir crédito na hora", "reason": "Mas ajuda a destravar o processo"},
+    {"feature": "Mexer no sistema oficial", "reason": "A gente só orienta antes de você enviar"}
+  ],
+  "summary": "A gente segura na sua mão até o fim. A decisão final é do órgão ambiental."
+}

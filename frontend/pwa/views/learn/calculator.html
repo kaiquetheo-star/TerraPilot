@@ -1,0 +1,52 @@
+<section>
+  <h2 class="view-title" data-page-title>Calculadora</h2>
+  <p class="view-subtitle">Seu rio tem quantos metros? A lei diz quanto deixar livre.</p>
+
+  <div class="card">
+    <div class="form-group">
+      <label class="form-label" for="river-width">Largura do rio (metros)</label>
+      <input type="number" id="river-width" class="form-control" inputmode="decimal" min="1" step="0.1" placeholder="Ex: 25" aria-describedby="river-hint">
+      <p id="river-hint" class="text-muted mt-2">Meça na beira da água ou peça ajuda ao técnico</p>
+    </div>
+    <button type="button" id="btn-calc-app" class="btn btn--primary">Calcular APP</button>
+  </div>
+
+  <div id="calc-result" class="card hidden" role="region" aria-live="polite"></div>
+
+  <hr style="margin: 24px 0; border: none; border-top: 1px solid var(--color-border);">
+
+  <div class="card">
+    <h3 style="margin-bottom:12px;">Reserva Legal (estimativa)</h3>
+    <div class="form-group">
+      <label class="form-label" for="property-area">Área total da propriedade (ha)</label>
+      <input type="number" id="property-area" class="form-control" min="0.1" step="0.1" placeholder="Ex: 30">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="rl-percent">Percentual legal de RL (%)</label>
+      <input type="number" id="rl-percent" class="form-control" min="1" max="100" value="20" placeholder="20">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="declared-rl">RL que você marcou (ha)</label>
+      <input type="number" id="declared-rl" class="form-control" min="0" step="0.1" placeholder="Ex: 4">
+    </div>
+    <button type="button" id="btn-calc-rl" class="btn btn--primary">Validar RL</button>
+    <div id="rl-result" class="mt-2 hidden" role="region" aria-live="polite"></div>
+  </div>
+
+  <hr style="margin: 24px 0; border: none; border-top: 1px solid var(--color-border);">
+
+  <div class="card">
+    <h3 style="margin-bottom:12px;">Área consolidada (Art. 61-A)</h3>
+    <p class="text-muted">Ocupação antes de 22/07/2008 pode ter APP mais branda</p>
+    <div class="form-group">
+      <label class="form-label" for="consolidated-date">Data da ocupação (AAAA-MM-DD)</label>
+      <input type="text" id="consolidated-date" class="form-control" placeholder="Ex: 2005-03-15" pattern="\\d{4}-\\d{2}-\\d{2}">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="consolidated-modulos">Tamanho (módulos fiscais)</label>
+      <input type="number" id="consolidated-modulos" class="form-control" min="0.1" step="0.1" placeholder="Ex: 1.5">
+    </div>
+    <button type="button" id="btn-calc-consolidated" class="btn btn--primary">Verificar Art. 61-A</button>
+    <div id="consolidated-result" class="mt-2 hidden" role="region" aria-live="polite"></div>
+  </div>
+</section>

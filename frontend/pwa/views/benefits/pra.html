@@ -1,0 +1,33 @@
+<section>
+  <h2 class="view-title" data-page-title>Programa de Regularização</h2>
+  <p class="view-subtitle">PRA — benefícios que você pode não saber que tem</p>
+
+  <div class="card">
+    <p>O PRA (Art. 59) ajuda quem tem passivo ambiental a regularizar com prazos e benefícios legais.</p>
+    <div class="form-group mt-2">
+      <label class="form-label">
+        <input type="checkbox" id="pra-has-passive" checked>
+        Tenho passivo ambiental (APP, RL ou área degradada)
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="form-label">
+        <input type="checkbox" id="pra-notification">
+        Já recebi notificação do órgão ambiental
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="pra-deforestation-date">Ocupação antes de 2008? (AAAA-MM-DD)</label>
+      <input type="text" id="pra-deforestation-date" class="form-control" placeholder="Ex: 2005-03-15">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="pra-surplus">Vegetação além do exigido (ha) — para CRA</label>
+      <input type="number" id="pra-surplus" class="form-control" min="0" step="0.1" placeholder="Ex: 3.5">
+    </div>
+    <button type="button" id="btn-pra-check" class="btn btn--primary">Verificar elegibilidade</button>
+  </div>
+
+  <div id="pra-results"></div>
+
+  <a href="#/benefits/collective-impact" class="btn btn--secondary mt-2">Ver impacto na sua região</a>
+</section>

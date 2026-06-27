@@ -1,0 +1,44 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "source": "SNIRH / ANA — Hidrografia (amostra offline para demonstração)",
+    "license": "Dados abertos"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "river_001",
+        "name": "Córrego da Fazenda",
+        "type": "river",
+        "label": "Riacho perto da sua coordenada"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-55.9180, -13.0520],
+          [-55.9145, -13.0495],
+          [-55.9100, -13.0480],
+          [-55.9055, -13.0465]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "river_002",
+        "name": "Ribeirão São João",
+        "type": "river",
+        "label": "Ribeirão a leste da coordenada"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-55.9000, -13.0550],
+          [-55.8950, -13.0530],
+          [-55.8900, -13.0500]
+        ]
+      }
+    }
+  ]
+}

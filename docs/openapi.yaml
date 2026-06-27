@@ -1,0 +1,678 @@
+openapi: 3.0.3
+info:
+  title: TerraPilot API
+  description: |
+    API REST do TerraPilot — assistente offline para retificações do Cadastro Ambiental Rural (CAR).
+
+    Expõe os 6 módulos core (regras, tradutor, guias, pré-preenchimento, progresso, conhecimento)
+    e exportação em formatos abertos (GeoJSON, SICAR XML).
+
+    **Repositório:** https://github.com/kaiquetheodoro/TerraPilot
+  version: 0.2.0
+  contact:
+    name: TerraPilot Contributors (Kaique Theodoro, Maicon Jean)
+    url: https://github.com/kaiquetheodoro/TerraPilot
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+
+servers:
+  - url: http://localhost:8001
+    description: Desenvolvimento local (`uvicorn src.api.main:app --reload --port 8001`)
+
+tags:
+  - name: system
+    description: Health check e metadados
+  - name: rules
+    description: Motor de regras — Lei 12.651/2012
+  - name: translator
+    description: Tradução de notificações OEMA
+  - name: guides
+    description: Guias passo-a-passo visuais
+  - name: prefill
+    description: Pré-preenchimento com bases abertas
+  - name: progress
+    description: Acompanhamento de retificações
+  - name: knowledge
+    description: FAQ contextual
+  - name: export
+    description: Exportação GeoJSON, SICAR XML e relatórios
+
+paths:
+  /health:
+    get:
+      tags: [system]
+      summary: Health check
+      description: Verifica se a API está online.
+      operationId: healthCheck
+      responses:
+        "200":
+          description: API operacional
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+              example:
+                status: online
+                version: "0.2.0"
+
+  /api/rules/app:
+    post:
+      tags: [rules]
+      summary: Valida APP de curso d'água
+      description: |
+        Calcula a largura mínima da Área de Preservação Permanente (APP) marginal
+        para cursos d'água naturais conforme **Lei 12.651/2012, Art. 4º, I**.
+      operationId: validateApp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppRuleRequest"
+            example:
+              river_width_m: 25
+      responses:
+        "200":
+          description: Resultado da validação APP
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RuleResponse"
+              example:
+                issue_code: APP_RIVER_WIDTH
+                min_width_m: 50
+                legal_ref: "Art. 4º, I, 'b' da Lei 12.651/2012"
+                human_explanation: "Seu rio tem cerca de 25 metros de largura. Pela lei, você precisa deixar pelo menos 50 metros livres de cada lado do rio (médio), contando a partir da beira da água."
+                fix_steps:
+                  - "Abra o SICAR Offline e localize o trecho do rio na sua propriedade."
+                  - "Clique em Desenhar (ou Editar) na área de APP do rio."
+                  - "Marque uma faixa de pelo menos 50 metros para cada lado, medindo a partir da borda da calha do rio."
+                  - "Confira se não há construção, pasto intenso ou desmatamento dentro dessa faixa."
+                  - "Salve o desenho e sincronize quando tiver internet."
+                visual_example: "Imagine o rio no centro: de cada lado, uma faixa verde de 50 metros sem plantio ou construção."
+        "422":
+          $ref: "#/components/responses/ValidationError"
+
+  /api/rules/rl:
+    post:
+      tags: [rules]
+      summary: Valida Reserva Legal
+      description: |
+        Verifica se a área de Reserva Legal declarada atende ao percentual mínimo legal
+        conforme **Lei 12.651/2012, Art. 12**.
+      operationId: validateRl
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RlRuleRequest"
+            example:
+              property_area_ha: 30
+              declared_rl_ha: 20
+              rl_percent_legal: 80
+              biome: Amazônia Legal
+      responses:
+        "200":
+          description: Resultado da validação RL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RuleResponse"
+              example:
+                issue_code: RL_PERIMETER_DIVERGENCE
+                min_width_m: null
+                legal_ref: "Art. 12 da Lei 12.651/2012"
+                human_explanation: "A Reserva Legal que você marcou tem 20 hectares, mas a lei pede pelo menos 24 hectares (80% do imóvel) no bioma Amazônia Legal. Faltam cerca de 4 hectares."
+                fix_steps:
+                  - "Abra o SICAR Offline e localize a camada Reserva Legal (RL)."
+                  - "Clique em Editar e amplie a área verde até cobrir os hectares corretos."
+                  - "Ajuste o polígono até atingir pelo menos 24 hectares."
+                  - "Salve o desenho e sincronize quando tiver internet."
+                visual_example: "Imagine um pedaço da propriedade com mata nativa: faltam 4 hectares para completar a Reserva Legal exigida."
+        "422":
+          $ref: "#/components/responses/ValidationError"
+
+  /api/translate/notification:
+    post:
+      tags: [translator]
+      summary: Traduz notificação OEMA
+      description: |
+        Converte linguagem técnica da notificação de retificação em mensagem empática
+        para o produtor rural, usando dicionário determinístico (sem IA paga).
+      operationId: translateNotification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NotificationRequest"
+            example:
+              technical_text: "Inconsistência no perímetro da RL - divergência de 2,3ha"
+      responses:
+        "200":
+          description: Notificação traduzida
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationResponse"
+              example:
+                simple_text: "A área de Reserva Legal que você marcou está cerca de 2 hectares menor que o necessário. Vamos corrigir juntos."
+                issue_code: RL_PERIMETER_DIVERGENCE
+                original_text: "Inconsistência no perímetro da RL - divergência de 2,3ha"
+                pattern_id: rl_perimeter_divergence
+                fix_step_count: 4
+                legal_ref: "Lei 12.651/2012 — ver guia por issue_code"
+                human_explanation: "A área de Reserva Legal que você marcou está cerca de 2 hectares menor que o necessário. Vamos corrigir juntos."
+                fix_steps:
+                  - "Abra o SICAR Offline no seu computador ou tablet."
+                  - "No mapa, localize a camada Reserva Legal (RL)."
+                  - "Clique em Editar, depois em Desenhar, e amplie a área verde até cobrir os hectares corretos."
+                  - "Clique em Salvar e sincronize quando tiver internet."
+        "422":
+          $ref: "#/components/responses/ValidationError"
+
+  /api/guide/{issue_code}:
+    get:
+      tags: [guides]
+      summary: Retorna guia passo-a-passo
+      description: Guia visual com instruções, explicação alternativa ("Não entendi") e ilustrações.
+      operationId: getGuide
+      parameters:
+        - name: issue_code
+          in: path
+          required: true
+          schema:
+            type: string
+            example: APP_RIVER_WIDTH
+        - name: min_width_m
+          in: query
+          schema:
+            type: integer
+            example: 50
+        - name: area_ha
+          in: query
+          schema:
+            type: number
+            example: 2.3
+      responses:
+        "200":
+          description: Guia completo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GuideResponse"
+              example:
+                issue_code: APP_RIVER_WIDTH
+                title: Corrigir a faixa de proteção do rio
+                benefit: "Com isso resolvido, você protege a água da propriedade e evita multa no CAR."
+                total_steps: 4
+                steps:
+                  - step_number: 1
+                    instruction: "Abra o SICAR Offline no seu computador ou tablet."
+                    alternative_explanation: "Procure o ícone verde escrito SICAR na área de trabalho."
+                    illustration: assets/guides/sicar-open.svg
+        "404":
+          description: issue_code sem guia cadastrado
+
+  /api/prefill/suggest:
+    post:
+      tags: [prefill]
+      summary: Sugere polígonos com bases abertas
+      description: |
+        Busca hidrografia, cobertura do solo e referências CAR públicas próximas à coordenada.
+        Usa IBGE, MapBiomas e SNIRH (amostras offline). Sempre exige confirmação do produtor.
+      operationId: prefillSuggest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrefillRequest"
+            example:
+              municipality: Lucas do Rio Verde
+              latitude: -13.051
+              longitude: -55.914
+              radius_km: 2.0
+      responses:
+        "200":
+          description: Sugestões de polígonos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrefillResponse"
+        "422":
+          $ref: "#/components/responses/ValidationError"
+
+  /api/progress/{property_id}:
+    get:
+      tags: [progress]
+      summary: Retorna progresso das retificações
+      description: Barra "3 de 7 resolvidos" e histórico de issue_codes.
+      operationId: getProgress
+      parameters:
+        - name: property_id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: raimundo_001
+      responses:
+        "200":
+          description: Progresso e histórico
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProgressResponse"
+              example:
+                property_id: raimundo_001
+                human_explanation: "2 de 3 problemas resolvidos — falta só mais um!"
+                progress:
+                  resolved_count: 2
+                  total_count: 3
+                  percent: 67
+                  bar_message: "2 de 3 problemas resolvidos — falta só mais um!"
+                  pending_issue_codes: [GEOMETRY_INVALID]
+                  is_complete: false
+
+  /api/knowledge/faq:
+    get:
+      tags: [knowledge]
+      summary: FAQ contextual por perfil
+      description: Perguntas frequentes filtradas por tamanho da propriedade, bioma e tipo de produção.
+      operationId: getFaq
+      parameters:
+        - name: property_size_ha
+          in: query
+          schema:
+            type: number
+            example: 30
+        - name: modulo_fiscal_ha
+          in: query
+          schema:
+            type: number
+            example: 75
+        - name: biome
+          in: query
+          schema:
+            type: string
+            example: Amazônia Legal
+        - name: production_type
+          in: query
+          schema:
+            type: string
+            enum: [agriculture, livestock, mixed, extractivism]
+            example: agriculture
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+      responses:
+        "200":
+          description: FAQ filtrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FAQResponse"
+
+  /api/export/geojson:
+    post:
+      tags: [export]
+      summary: Exporta GeoJSON
+      description: Exporta perímetro e polígonos da propriedade em FeatureCollection GeoJSON (RFC 7946).
+      operationId: exportGeojson
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PropertyExportRequest"
+            example:
+              property_id: raimundo_001
+              municipality: Santarém
+              area_ha: 30
+              centroid: [-2.4431, -54.7083]
+              geometry:
+                type: Polygon
+                coordinates:
+                  - [[-54.71, -2.44], [-54.70, -2.44], [-54.70, -2.45], [-54.71, -2.45], [-54.71, -2.44]]
+      responses:
+        "200":
+          description: GeoJSON exportado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeoJsonExportResponse"
+
+  /api/export/sicar:
+    post:
+      tags: [export]
+      summary: Exporta XML SICAR
+      description: XML simplificado para importação no SICAR Offline (campos oficiais devem ser completados antes da submissão).
+      operationId: exportSicar
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PropertyExportRequest"
+      responses:
+        "200":
+          description: XML exportado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SicarExportResponse"
+              example:
+                property_id: raimundo_001
+                xml: "<?xml version=\"1.0\" encoding=\"UTF-8\"?><CAR xmlns=\"http://www.car.gov.br/schema\">...</CAR>"
+
+  /api/export/progress/{property_id}:
+    get:
+      tags: [export]
+      summary: Relatório de progresso exportável
+      description: Relatório completo para impressão ou arquivo local.
+      operationId: exportProgressReport
+      parameters:
+        - name: property_id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: raimundo_001
+      responses:
+        "200":
+          description: Relatório de progresso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProgressExportResponse"
+
+components:
+  responses:
+    ValidationError:
+      description: Parâmetros inválidos
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/HTTPValidationError"
+
+  schemas:
+    HealthResponse:
+      type: object
+      required: [status, version]
+      properties:
+        status:
+          type: string
+          example: online
+        version:
+          type: string
+          example: "0.2.0"
+
+    RuleResponse:
+      type: object
+      required: [issue_code, legal_ref, human_explanation, fix_steps]
+      properties:
+        issue_code:
+          type: string
+          example: APP_RIVER_WIDTH
+        min_width_m:
+          type: integer
+          nullable: true
+          example: 50
+        legal_ref:
+          type: string
+          example: "Art. 4º, I, 'b' da Lei 12.651/2012"
+        human_explanation:
+          type: string
+        fix_steps:
+          type: array
+          items:
+            type: string
+        visual_example:
+          type: string
+          nullable: true
+
+    AppRuleRequest:
+      type: object
+      required: [river_width_m]
+      properties:
+        river_width_m:
+          type: number
+          format: float
+          exclusiveMinimum: 0
+          description: Largura do curso d'água em metros
+
+    RlRuleRequest:
+      type: object
+      required: [property_area_ha, declared_rl_ha, rl_percent_legal]
+      properties:
+        property_area_ha:
+          type: number
+          format: float
+          exclusiveMinimum: 0
+        declared_rl_ha:
+          type: number
+          format: float
+          minimum: 0
+        rl_percent_legal:
+          type: integer
+          minimum: 1
+          maximum: 100
+        biome:
+          type: string
+
+    NotificationRequest:
+      type: object
+      required: [technical_text]
+      properties:
+        technical_text:
+          type: string
+          minLength: 1
+
+    NotificationResponse:
+      type: object
+      required: [simple_text, original_text]
+      properties:
+        simple_text:
+          type: string
+        issue_code:
+          type: string
+          nullable: true
+        original_text:
+          type: string
+        pattern_id:
+          type: string
+          nullable: true
+        fix_step_count:
+          type: integer
+          nullable: true
+        legal_ref:
+          type: string
+          nullable: true
+        human_explanation:
+          type: string
+          nullable: true
+        fix_steps:
+          type: array
+          items:
+            type: string
+          nullable: true
+
+    GuideStep:
+      type: object
+      properties:
+        step_number:
+          type: integer
+        instruction:
+          type: string
+        alternative_explanation:
+          type: string
+        illustration:
+          type: string
+
+    GuideResponse:
+      type: object
+      properties:
+        issue_code:
+          type: string
+        title:
+          type: string
+        benefit:
+          type: string
+        total_steps:
+          type: integer
+        steps:
+          type: array
+          items:
+            $ref: "#/components/schemas/GuideStep"
+
+    PrefillRequest:
+      type: object
+      required: [municipality, latitude, longitude]
+      properties:
+        municipality:
+          type: string
+        latitude:
+          type: number
+          minimum: -90
+          maximum: 90
+        longitude:
+          type: number
+          minimum: -180
+          maximum: 180
+        radius_km:
+          type: number
+          default: 2.0
+          exclusiveMinimum: 0
+
+    PrefillResponse:
+      type: object
+      properties:
+        municipality:
+          type: object
+        latitude:
+          type: number
+        longitude:
+          type: number
+        suggestions:
+          type: array
+          items:
+            type: object
+        requires_confirmation:
+          type: boolean
+        human_message:
+          type: string
+        data_sources:
+          type: array
+          items:
+            type: string
+
+    ProgressResponse:
+      type: object
+      properties:
+        property_id:
+          type: string
+        human_explanation:
+          type: string
+        progress:
+          type: object
+        history:
+          type: array
+          items:
+            type: object
+
+    FAQResponse:
+      type: object
+      properties:
+        profile_summary:
+          type: string
+        property_size_category:
+          type: string
+          nullable: true
+        total_entries:
+          type: integer
+        entries:
+          type: array
+          items:
+            type: object
+
+    PropertyExportRequest:
+      type: object
+      required: [property_id]
+      properties:
+        property_id:
+          type: string
+        municipality:
+          type: string
+        area_ha:
+          type: number
+        centroid:
+          type: array
+          items:
+            type: number
+          minItems: 2
+          maxItems: 2
+        geometry:
+          type: object
+        polygons:
+          type: array
+          items:
+            type: object
+
+    GeoJsonExportResponse:
+      type: object
+      required: [geojson, feature_count]
+      properties:
+        geojson:
+          type: string
+        feature_count:
+          type: integer
+
+    SicarExportResponse:
+      type: object
+      required: [xml, property_id]
+      properties:
+        xml:
+          type: string
+        property_id:
+          type: string
+
+    ProgressExportResponse:
+      type: object
+      properties:
+        property_id:
+          type: string
+        exported_at:
+          type: string
+          format: date-time
+        format:
+          type: string
+          example: terrapilot_progress_report
+        summary:
+          type: object
+        history:
+          type: array
+          items:
+            type: object
+        human_message:
+          type: string
+        is_complete:
+          type: boolean
+        pending_issues:
+          type: array
+          items:
+            type: string
+
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: object

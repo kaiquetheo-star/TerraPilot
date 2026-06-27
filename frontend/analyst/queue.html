@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fila de Prioridade — TerraPilot Analista</title>
+  <meta name="theme-color" content="#2D5F3F">
+  <link rel="stylesheet" href="css/analyst.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <a href="#main" class="skip-link">Pular para o conteúdo</a>
+  <button type="button" id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Abrir menu"></button>
+
+  <div class="app-layout">
+    <aside id="sidebar" class="sidebar" aria-label="Barra lateral"></aside>
+    <div class="main-wrapper">
+      <main id="main" class="main-content" tabindex="-1">
+        <header class="page-header">
+          <div>
+            <h1>Fila de prioridade</h1>
+            <p class="page-header__meta">Casos ordenados por score de prioridade</p>
+          </div>
+        </header>
+
+        <div class="filter-bar" role="search" aria-label="Filtros da fila">
+          <div class="form-group">
+            <label for="filter-priority">Prioridade</label>
+            <select id="filter-priority">
+              <option value="">Todas</option>
+              <option value="critical">Crítico</option>
+              <option value="high">Alto</option>
+              <option value="medium">Médio</option>
+              <option value="low">Baixo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="filter-biome">Bioma</label>
+            <select id="filter-biome">
+              <option value="">Todos</option>
+              <option value="Caatinga">Caatinga</option>
+              <option value="Cerrado">Cerrado</option>
+              <option value="Amazônia">Amazônia</option>
+              <option value="Mata Atlântica">Mata Atlântica</option>
+              <option value="Pampa">Pampa</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="filter-issue">Tipo de erro</label>
+            <select id="filter-issue">
+              <option value="">Todos</option>
+              <option value="APP_RIVER_WIDTH">APP de rio</option>
+              <option value="RL_PERCENTAGE">Reserva Legal (%)</option>
+              <option value="APP_SPRING_RADIUS">APP de nascente</option>
+              <option value="CONSOLIDATED_APP">APP consolidada</option>
+              <option value="DOC_MISSING">Documentação</option>
+              <option value="PRA_PENDING">PRA pendente</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="filter-days">Sem resposta</label>
+            <select id="filter-days">
+              <option value="">Qualquer</option>
+              <option value="7">&gt;7 dias</option>
+              <option value="15">&gt;15 dias</option>
+              <option value="30">&gt;30 dias</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="queue-loading" class="loading"><div class="loading__spinner"></div> Carregando fila...</div>
+
+        <div class="panel table-wrap">
+          <table class="data-table" aria-label="Tabela de casos prioritários">
+            <thead>
+              <tr>
+                <th scope="col">Prioridade</th>
+                <th scope="col">Produtor</th>
+                <th scope="col">Tipo de erro</th>
+                <th scope="col">Dias s/ resposta</th>
+                <th scope="col">Score</th>
+                <th scope="col">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="queue-table-body"></tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="case-modal" hidden role="dialog" aria-modal="true" aria-labelledby="case-modal-title">
+    <div class="modal">
+      <div class="modal__header">
+        <h2 id="case-modal-title">Detalhes do caso</h2>
+        <button type="button" class="modal__close" data-close-modal aria-label="Fechar">×</button>
+      </div>
+      <div class="modal__body" id="case-modal-body"></div>
+      <div class="modal__footer">
+        <button type="button" class="btn btn--ghost" data-close-modal>Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="notify-modal" hidden role="dialog" aria-modal="true" aria-labelledby="notify-modal-title">
+    <div class="modal">
+      <div class="modal__header">
+        <h2 id="notify-modal-title">Enviar notificação</h2>
+        <button type="button" class="modal__close" data-close-modal aria-label="Fechar">×</button>
+      </div>
+      <div class="modal__body" id="notify-modal-body"></div>
+      <div class="modal__footer">
+        <button type="button" class="btn btn--ghost" data-close-modal>Fechar</button>
+        <button type="button" class="btn btn--primary" id="btn-copy-whatsapp">Copiar para WhatsApp</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/mock-data.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/queue.js"></script>
+</body>
+</html>

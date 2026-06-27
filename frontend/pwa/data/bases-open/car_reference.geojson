@@ -1,0 +1,30 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "source": "Portal de Consulta Pública do CAR (amostra offline para demonstração)",
+    "license": "Dados abertos SICAR"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "car_ref_001",
+        "car_code": "MT-5105903-XXXX",
+        "type": "property_boundary",
+        "label": "Limite de imóvel rural vizinho (referência pública)"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-55.9200, -13.0540],
+            [-55.9080, -13.0540],
+            [-55.9080, -13.0480],
+            [-55.9200, -13.0480],
+            [-55.9200, -13.0540]
+          ]
+        ]
+      }
+    }
+  ]
+}

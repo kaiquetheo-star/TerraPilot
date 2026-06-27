@@ -1,0 +1,19 @@
+{
+  "eligible": true,
+  "benefits": [
+    "Suspensão de multas anteriores a 22/07/2008",
+    "Não pode ser autuado durante cumprimento",
+    "Acesso a crédito rural durante regularização",
+    "Prazos diferenciados de recomposição"
+  ],
+  "legal_ref": "Art. 59 da Lei 12.651/2012",
+  "adhesion_steps": [
+    "Receba a notificação de passivo ambiental da OEMA",
+    "Consulte o TerraPilot para entender o que precisa ser corrigido",
+    "Acesse o portal do PRA do seu estado",
+    "Elabore o Termo de Compromisso com apoio técnico",
+    "Envie a adesão ao PRA e aguarde homologação"
+  ],
+  "deadline": "180 dias após notificação",
+  "human_explanation": "Sua propriedade pode se beneficiar do PRA."
+}

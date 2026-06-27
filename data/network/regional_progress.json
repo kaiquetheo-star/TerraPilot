@@ -1,0 +1,24 @@
+{
+  "source": "Painel de Regularização Ambiental — SFB (amostra demonstrativa)",
+  "updated": "2026-04-01",
+  "municipalities": {
+    "2914703": {
+      "name": "Itaberaba-BA",
+      "producers_regularized_this_month": 12,
+      "percentage_complete": 0.34,
+      "cooperatives_active": ["Cooperativa Agrícola do Vale", "Sindicato dos Trabalhadores Rurais"]
+    },
+    "5105903": {
+      "name": "Lucas do Rio Verde-MT",
+      "producers_regularized_this_month": 28,
+      "percentage_complete": 0.52,
+      "cooperatives_active": ["Cooperativa Mista dos Produtores", "Sindicato Rural MT"]
+    },
+    "5211909": {
+      "name": "Jataí-GO",
+      "producers_regularized_this_month": 15,
+      "percentage_complete": 0.41,
+      "cooperatives_active": ["Cooperativa Agropecuária de Jataí"]
+    }
+  }
+}
