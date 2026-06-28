@@ -1,5 +1,16 @@
 const API_BASE = 'http://localhost:8001';
 const isGitHubPages = window.location.hostname.includes('github.io');
+let demoModeActive = isGitHubPages;
+
+function activateDemoMode(reason) {
+  if (demoModeActive) return;
+  demoModeActive = true;
+  console.warn('TerraPilot Analista: modo demonstração —', reason);
+  if (typeof renderSidebar === 'function') renderSidebar();
+  if (typeof showToast === 'function') {
+    showToast('Modo demonstração — API offline; exibindo dados simulados.', 'info', 5000);
+  }
+}
 
 function mockAnalystRequest(path, options = {}) {
   const body = options.body ? JSON.parse(options.body) : null;
@@ -107,17 +118,22 @@ async function request(path, options = {}) {
   if (isGitHubPages) {
     return mockAnalystRequest(path, options);
   }
-  const resp = await fetch(`${API_BASE}${path}`, {
-    headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
-    ...options,
-  });
-  if (!resp.ok) {
-    const err = await resp.json().catch(() => ({}));
-    const detail = err.detail;
-    const msg = typeof detail === 'string' ? detail : `HTTP ${resp.status}`;
-    throw new Error(msg);
+  try {
+    const resp = await fetch(`${API_BASE}${path}`, {
+      headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+      ...options,
+    });
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      const detail = err.detail;
+      const msg = typeof detail === 'string' ? detail : `HTTP ${resp.status}`;
+      throw new Error(msg);
+    }
+    return resp.json();
+  } catch (err) {
+    activateDemoMode(err.message || 'API indisponível');
+    return mockAnalystRequest(path, options);
   }
-  return resp.json();
 }
 
 const api = {

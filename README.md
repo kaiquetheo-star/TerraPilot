@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/terrapilot-logo.svg" alt="TerraPilot Logo" width="300">
+  <img src="images/terrapilot-logo.png" alt="TerraPilot Logo" width="300">
 </p>
 
 <h1 align="center">🌱 TerraPilot</h1>
@@ -106,15 +106,33 @@ Ao aderir ao Programa de Regularização Ambiental:
 
 Se tem vegetação além do exigido, pode emitir Cota de Reserva Ambiental — ativo financeiro negociável.
 
-## 🤝 Rede de Confiança
+## 🤝 Estratégia de Distribuição (Rede de Confiança)
 
-Seu Raimundo decide ouvindo vizinhos, sindicatos, cooperativas. O TerraPilot se espalha por essa rede:
+O briefing do haCARthon mostra que Seu Raimundo **"se orienta por vizinhos, sindicatos, cooperativas, técnicos agrícolas e gerentes de banco"**.
 
-- "3 produtores da sua região regularizaram este mês"
-- Templates para líderes comunitários usarem em reuniões
-- "Modo Cooperativa" para extensão rural acompanhar múltiplos produtores
+O TerraPilot foi desenhado para ser **distribuído por essa rede existente**, não para criar canal novo:
 
-**Não é um app. É uma ferramenta que se espalha pela rede de confiança que já existe no campo.**
+### Canais técnicos implementados (hoje)
+
+✅ PWA offline-first (GitHub Pages funcional)  
+✅ Painel web da analista (6 telas, API REST)  
+✅ WhatsApp via `api.whatsapp.com` (link direto, zero custo)  
+✅ SMS como fallback
+
+### Estratégia de expansão (roadmap, não implementação)
+
+📋 **EMATER/ATER estadual**: recomenda no atendimento presencial  
+📋 **Sindicatos rurais**: divulga no grupo de WhatsApp da região  
+📋 **Gerentes de banco**: sugere ao pedir crédito rural  
+📋 **QR Code na notificação oficial**: conecta SICAR → TerraPilot
+
+### Por que essa estratégia funciona
+
+- **Não precisamos convencer produtor a baixar app novo** — ele já confia nessas instituições
+- **Custo de aquisição zero** — usa canais já pagos pelo governo/banco
+- **Validação social embutida** — "3 produtores da sua região regularizaram este mês" é mais forte que qualquer marketing
+
+**Nota**: Esta é uma estratégia de go-to-market baseada no briefing, não funcionalidade implementada. A arquitetura do TerraPilot suporta essa distribuição (multi-tenant, templates regionais), mas os acordos institucionais ainda não foram firmados.
 
 ## ✅ O Que Fazemos / O Que NÃO Fazemos
 
@@ -238,7 +256,7 @@ Com base em dados do **Painel de Regularização Ambiental do Serviço Florestal
 - Maior transparência no processo de retificação
 - Fortalecimento do CAR como Bem Público Digital
 
-**Nota**: Estas são estimativas baseadas em dados públicos. O impacto real será medido após piloto com OEMAs parceiras.
+**Nota**: Estimativas derivadas de dados públicos do Painel SFB (abril/2026). O cálculo de R$ 195M assume crédito médio de R$ 4.600 por produtor e adesão de 8,5% dos pendentes no 1º ano. Impacto real será medido em piloto com OEMAs.
 
 ## 🌍 Replicabilidade Internacional (CAR como DPG)
 
@@ -401,19 +419,42 @@ O TerraPilot foi desenvolvido com foco em duas personas reais identificadas no b
 
 Cada funcionalidade do TerraPilot é validada contra essas duas personas antes de ser implementada.
 
-## 🔗 Integração com o SICAR Oficial
+## 🔗 Integração com o Ecossistema SICAR (sem depender de API)
 
-O TerraPilot **não substitui o [car.gov.br](https://www.car.gov.br)**. É uma camada de inteligência que **alimenta** o SICAR:
+O TerraPilot usa os canais **que já existem** no SICAR oficial, sem depender de APIs que ainda não foram disponibilizadas:
 
-1. Produtor recebe notificação de retificação
-2. TerraPilot traduz e orienta (offline)
-3. Produtor corrige no SICAR Offline
-4. Produtor envia retificação ao SICAR oficial
-5. Luana (analista ambiental) analisa e decide no sistema do governo
+✅ **Módulo de Cadastro Offline** ([car-sus.dataprev.gov.br/#/baixar](https://car-sus.dataprev.gov.br/#/baixar))  
+Produtor baixa, corrige localmente seguindo o guia visual do TerraPilot, e envia via portal oficial
+
+✅ **Módulo de Cadastro Pré-Preenchido** (mesmo link)  
+TerraPilot valida e explica cada sugestão que o SICAR já fez, citando o artigo exato da Lei 12.651/2012
+
+✅ **Portal de Consulta Pública** ([car.gov.br/publico](https://www.car.gov.br/publico))  
+Fonte de dados abertos para enriquecer o pré-preenchimento
+
+✅ **Central do Proprietário/Possuidor** ([car-sus.dataprev.gov.br/#/central/acesso](https://car-sus.dataprev.gov.br/#/central/acesso))  
+Produtor visualiza status das retificações pendentes
+
+O TerraPilot **não substitui o [car.gov.br](https://www.car.gov.br)**. É uma camada de inteligência que **alimenta** o SICAR.
+
+### Fluxo Real (100% funcional hoje, sem API)
+
+1. Luana (analista OEMA) analisa CAR no sistema estadual oficial
+2. Notificação de retificação é emitida (email/SMS/portal)
+3. TerraPilot traduz notificação para linguagem simples
+4. TerraPilot gera guia passo-a-passo visual
+5. Produtor abre Módulo Offline do SICAR
+6. Produtor corrige polígono seguindo o guia
+7. Produtor envia retificação via portal oficial
+8. Luana recebe, analisa e aprova
 
 **Fluxo:** Produtor → TerraPilot (tradução + guia + validação local) → SICAR (submissão oficial) → Análise da OEMA
 
-Quando a API pública do SICAR estiver disponível, o TerraPilot poderá sincronizar status de retificação automaticamente — sem substituir a decisão final do analista.
+### Por que não dependemos de API
+
+O TerraPilot é **autônomo por design**. A solução funciona 100% hoje usando os canais que o governo já disponibilizou. Se um dia o governo abrir uma API pública oficial, ótimo — será uma expansão opcional. Mas não é requisito.
+
+Isso é um **diferencial**: zero dependência de terceiros, zero cronograma do governo, zero bloqueio institucional.
 
 ## 🏗️ Arquitetura
 
@@ -780,6 +821,54 @@ Para **validação de regras legais determinísticas**, regras em código são s
 
 O TerraPilot não é anti-IA — é **pragmático**. Usamos a ferramenta certa pro problema certo.
 
+## 🔮 Quando IA Pode Fazer Sentido no Futuro
+
+O TerraPilot usa regras determinísticas porque é a ferramenta certa para o problema atual. Mas a arquitetura está preparada para adotar IA **se e somente se** ela atender simultaneamente aos 5 princípios innegociáveis do projeto.
+
+### Princípios Innegociáveis para Qualquer IA Futura
+
+1. **Custo zero para o governo**
+   - Apenas modelos open-weights (LLaMA, Mistral, Gemma) rodando em servidor público (Dataprev/SERPRO)
+   - Zero dependência de API paga (OpenAI, Anthropic, Alibaba)
+
+2. **Soberania digital**
+   - Modelo deve rodar em infraestrutura brasileira
+   - Zero envio de dados para servidores estrangeiros
+   - Licença permissiva (Apache 2.0, MIT) que permita uso governamental
+
+3. **Offline-first preservado**
+   - Qualquer IA deve ter versão "on-device" que rode no PWA local
+   - Produtor não pode depender de internet para validação crítica
+
+4. **Auditabilidade total**
+   - Modelo deve ser interpretável (não "caixa preta")
+   - Cada decisão deve poder ser rastreada até artigo da Lei 12.651/2012
+   - Analista (Luana) deve poder contestar e corrigir
+
+5. **Não substitui decisão humana**
+   - IA pode SUGERIR, nunca DECIDIR
+   - Aprovação final sempre da analista ambiental
+   - Produtor sempre tem direito a explicação em linguagem simples
+
+### Casos de Uso Potenciais (sob avaliação)
+
+| Caso | Justificativa | Status |
+|------|---------------|--------|
+| Análise de fotos de campo | Produtor tira foto da APP, modelo confirma vegetação | 🔬 Pesquisa |
+| Chatbot para dúvidas complexas | Produtor pergunta "posso plantar aqui?" em linguagem natural | 🔬 Pesquisa |
+| Análise de satélite para pré-validação | Comparar polígono declarado com MapBiomas recente | 🔬 Pesquisa |
+| Transcrição de áudio para texto | Produtor narra a situação, sistema preenche formulário | 🔬 Pesquisa |
+
+### O que NÃO faremos (mesmo que tecnicamente possível)
+
+❌ **IA que toma decisão final** — viola princípio "Luana decide"  
+❌ **IA que gera regras legais** — viola rastreabilidade (precisa ser artigo da lei)  
+❌ **IA em cloud estrangeiro** — viola soberania digital  
+❌ **IA que depende de internet** — viola offline-first  
+❌ **IA com custo por token** — viola sustentabilidade
+
+**Resumo**: IA só entra no TerraPilot quando for a ÚNICA forma de resolver um problema real do produtor ou da analista, E quando atender aos 5 princípios acima. Até lá, regras em Python continuam sendo a solução superior.
+
 ## 🔄 Comparação com Sistemas Existentes
 
 O TerraPilot **não substitui** os sistemas oficiais. É uma **camada de inteligência** que se integra a eles.
@@ -865,7 +954,7 @@ O TerraPilot prioriza **regras em código** em vez de IA paga. Cada verificaçã
 | PRA | `src/pra/` | Elegibilidade e benefícios do Programa de Regularização (Art. 59) |
 | Impacto Coletivo | `src/collective/` | Contribuição individual para metas municipais e bacias |
 | Matriz de Capacidades | `src/capability/` | O que fazemos / o que não fazemos (honestidade técnica) |
-| Rede de Confiança | `src/network/` | Progresso regional e templates para líderes comunitários |
+| Rede de Confiança | `src/network/` | Demo: progresso regional + templates de fala; estratégia de distribuição (EMATER/sindicatos) no roadmap |
 | Primeira Declaração | `src/first_declaration/` | Fluxo guiado para quem nunca declarou o CAR |
 | Progresso | `src/progress/` | Barra "3 de 7 resolvidos" + benefícios tangíveis |
 | Conhecimento | `src/knowledge/` | FAQ contextual + roteiros de áudio offline |
@@ -928,19 +1017,37 @@ curl http://localhost:8001/health
 
 ## ⚠️ Limitações Conhecidas
 
-- Bases de pré-preenchimento usam **amostras offline** para demonstração; expansão para cobertura nacional depende de download prévio de GeoJSON público
-- O motor de regras implementa APP (Art. 4º, I), RL (Art. 12), áreas consolidadas (Art. 61-A) e elegibilidade PRA (Art. 59); pequenas propriedades (Art. 67) estão no roadmap
-- A decisão final de aprovação do CAR permanece com o analista ambiental (Luana) — o TerraPilot **orienta**, nunca decide
-- Integração automática com API do SICAR aguarda disponibilidade da API pública oficial
+- Bases de pré-preenchimento usam amostras offline para demonstração; expansão para cobertura nacional depende de download prévio de GeoJSON público de IBGE, MapBiomas e SNIRH
+- O motor de regras implementa APP (Art. 4º, I), RL (Art. 12), áreas consolidadas (Art. 61-A) e elegibilidade PRA (Art. 59); pequenas propriedades (Art. 67) estão no roadmap de curto prazo
+- A decisão final de aprovação do CAR permanece com o analista ambiental (Luana) — o TerraPilot orienta, nunca decide. Isso é **by design**, não limitação: respeita a soberania do órgão ambiental
+- O fluxo de comunicação usa `api.whatsapp.com` (link direto, gratuito e funcional); migração para WhatsApp Business API oficial está no roadmap para maior robustez em escala
+- Áudio explicativo usa Web Speech API (TTS nativo do navegador); áudios gravados por região estão no roadmap para maior naturalidade
 
 ## 🗺️ Roadmap
 
-- Completar motor de regras (RL Art. 12, áreas consolidadas Art. 61-A, pequenas propriedades Art. 67)
-- Integração com WhatsApp Business API oficial (link direto via api.whatsapp.com já disponível)
-- Piloto com OEMAs parceiras do haCARthon
-- Codificar regras internacionais (PE, ID, MX) a partir de `config/country_rules.json`; Colômbia já tem template em `config/colombia_rules.json`
+### Curto prazo (próximos 3 meses)
+
+- Completar motor de regras: Art. 67 (pequenas propriedades)
+- Expansão nacional das bases GeoJSON pré-baixadas
+- Piloto com 2-3 OEMAs parceiras do haCARthon para validação de impacto
+- Testes de usabilidade com produtores rurais reais
+
+### Médio prazo (3-12 meses)
+
+- Migração de `api.whatsapp.com` para WhatsApp Business API oficial
 - Suporte a áudio gravado por região (além de TTS offline)
-- Submissão ao [DPG Indicator Framework da UNDP](https://digitalpublicgoods.net/) para certificação oficial como Bem Público Digital
+- Codificação de regras internacionais: Peru, Indonésia, México (Colômbia já tem template em `config/colombia_rules.json`)
+
+### Longo prazo (12-24 meses)
+
+- Certificação oficial como Digital Public Good pela UNDP/DPGA
+- Parcerias formais com ministérios de ambiente da Colômbia e Peru
+- Marketplace de regras ambientais (outros países contribuem)
+
+### Expansões condicionais (se fizerem sentido técnico)
+
+- Análise de fotos de campo com modelo on-device (Ollama/LLaMA) — ver seção "Quando IA Pode Fazer Sentido no Futuro"
+- Análise de satélite integrada (MapBiomas + modelo próprio) — apenas se atender aos 5 princípios de IA
 
 ## 🏛️ Certificação DPG (UNDP)
 

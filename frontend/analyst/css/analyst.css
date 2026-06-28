@@ -84,6 +84,14 @@ h3 { font-size: 18px; font-weight: 600; margin: 0 0 8px; }
   margin-bottom: 12px;
 }
 
+.sidebar__brand-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  margin-bottom: 8px;
+  border-radius: 8px;
+}
+
 .sidebar__brand h1 {
   font-size: 18px;
   color: white;

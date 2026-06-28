@@ -1,4 +1,4 @@
-const CACHE_NAME = 'terrapilot-v9-github-pages';
+const CACHE_NAME = 'terrapilot-v10-github-pages';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -39,8 +39,10 @@ const STATIC_ASSETS = [
   './views/help/capability.html',
   './assets/illustrations/app-river.svg',
   './assets/illustrations/rl-forest.svg',
-  './assets/icons/icon-192.svg',
-  './assets/icons/icon-512.svg',
+  '../../images/terrapilot-logo.png',
+  '../../images/terrapilot-favicon.png',
+  '../../images/terrapilot-icon-192.png',
+  '../../images/terrapilot-icon-512.png',
   './assets/screenshots-sicar/sicar-open.svg',
   './assets/screenshots-sicar/draw-button.svg',
   './assets/screenshots-sicar/select-river.svg',

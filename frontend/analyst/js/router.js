@@ -35,6 +35,7 @@ function renderSidebar() {
 
   sidebar.innerHTML = `
     <div class="sidebar__brand">
+      <img src="../../images/terrapilot-logo.png" alt="" class="sidebar__brand-logo" aria-hidden="true">
       <h1>TerraPilot</h1>
       <p>Módulo Analista — Luana</p>
     </div>
@@ -43,7 +44,7 @@ function renderSidebar() {
       ${isDark ? Icons.sun : Icons.moon}
       <span>${isDark ? 'Tema claro' : 'Tema escuro'}</span>
     </button>
-    <div class="sidebar__footer">API: ${API_BASE}</div>
+    <div class="sidebar__footer">${demoModeActive ? 'Modo demonstração (API offline)' : `API: ${API_BASE}`}</div>
   `;
 
   document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme);

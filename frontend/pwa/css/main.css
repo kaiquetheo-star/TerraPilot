@@ -65,8 +65,8 @@ a { color: var(--color-primary); }
   width: 56px; height: 56px; margin: 0 auto 8px;
   background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
   border-radius: 14px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.75rem;
+  display: block;
+  object-fit: contain;
 }
 .app-header h1 { font-size: 1.5rem; color: var(--color-primary); }
 .app-header p { color: var(--color-text-muted); font-size: 1rem; }
